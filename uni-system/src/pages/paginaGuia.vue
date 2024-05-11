@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-md">
-    <q-layout view="lHh lpr lFf" container style="height: 400px" class="shadow-2 rounded-borders">
+    <q-layout view="lHh lpr lFf" container style="height: 400px" class="flat">
       <q-header elevated>
         <q-toolbar>
           <q-toolbar-title>UniSystem</q-toolbar-title>
@@ -13,17 +13,19 @@
         </q-tabs>
       </q-header>
       <q-page-container>
-        <q-page class="q-pa-md">
+        <q-page class="flat">
           <q-tab-panels v-model="tab">
-            <q-tab-panel name="professor">
-              {{ textoProfessor }}
+            <q-tab-panel name="professor" align="center" >
+              <p>{{ textoProfessor }}</p>
+              <q-btn to="professor" target="_blank" >{{ textoBotao }}</q-btn>
             </q-tab-panel>
-            <q-tab-panel name="estudante">
-              {{ textoAluno }}
+            <q-tab-panel name="estudante" align="center">
+              <p>{{ textoAluno }}</p>
+              <q-btn to="estudante" target="_blank" >{{ textoBotao }}</q-btn>
             </q-tab-panel>
-            <q-tab-panel name="disciplinas">
-              {{ textoCurso }}
-              <q-btn to="layout" target="_blank">btn</q-btn>
+            <q-tab-panel name="disciplinas" align="center">
+              <p>{{ textoCurso }}</p>
+              <q-btn to="disciplinas" target="_blank" >{{ textoBotao }}</q-btn>
             </q-tab-panel>
           </q-tab-panels>
         </q-page>
@@ -36,9 +38,10 @@
 export default {
   data () {
     return {
-      textoProfessor: 'texto professor',
-      textoAluno: 'texto aluno',
-      textoCurso: 'texto curso'
+      textoProfessor: 'selecione o botão acessar para consultar ou editar informações sobre professores',
+      textoAluno: 'selecione o botão acessar para consultar ou editar informações sobre alunos',
+      textoCurso: 'selecione o botão acessar para consultar ou editar informações sobre cursos',
+      textoBotao: 'Acessar'
     }
   }
 }

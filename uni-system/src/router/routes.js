@@ -4,11 +4,19 @@ const routes = [
     component: () => import('pages/paginaGuia.vue')
   },
   {
-    path: '/layout',
-    component: () => import('../layouts/MainLayout.vue')
+    path: '/login',
+    component: () => import('../pages/paginaLogin.vue')
   },
   {
-    path: '/login',
+    path: '/estudante',
+    component: () => import('../pages/paginaLogin.vue')
+  },
+  {
+    path: '/professor',
+    component: () => import('../pages/paginaLogin.vue')
+  },
+  {
+    path: '/disciplinas',
     component: () => import('../pages/paginaLogin.vue')
   },
   // Always leave this as last one,
