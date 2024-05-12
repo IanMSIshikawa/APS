@@ -6,7 +6,7 @@ const routes = [
     //   { path: '', component: () => import('pages/Index.vue') }
     // ]
     path: '/',
-    component: () => import('pages/paginaLogin.vue')
+    component: () => import('pages/disciplina/Disciplina.vue')
   },
 
   // Always leave this as last one,

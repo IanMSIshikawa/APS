@@ -1,5 +1,6 @@
 <template>
   <div class="q-pa-md row items-start q-gutter-md">
+    <HeaderPrincipal/>
     <q-card dark bordered class="bg-grey-9 my-card">
       <q-card-section>
         {{ texto1 }}
@@ -27,12 +28,16 @@
         {{ texto3 }}
       </q-card-section>
     </q-card>
-
+  
   </div>
 </template>
 
 <script>
+
 export default {
+  components: {
+    HeaderPrincipal: () => import('src/components/header/HeaderPrincipal.vue')
+  },
   setup () {
     return {
       lorem: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
