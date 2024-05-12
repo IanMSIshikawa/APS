@@ -1,69 +1,53 @@
 <template>
-  <div class="q-pa-md row items-start q-gutter-md flex-center">
-    <q-card dark bordered class="bg-grey-9 my-card">
-      <q-card-section>
-        {{ texto1 }}
-      </q-card-section>
-    </q-card>
+  <div class="q-pa-md">
+    <q-layout view="lHh lpr lFf" container style="height: 400px" class="flat">
+      <q-header elevated>
+        <q-toolbar>
+          <q-toolbar-title>UniSystem</q-toolbar-title>
+        </q-toolbar>
 
-    <q-card dark bordered class="bg-grey-9 my-card"
-    >
-      <q-card-section>
-        <div class="text-h6">{{ titulo2 }}</div>
-      </q-card-section>
-      <q-card-section class="q-pt-none">
-        {{ texto2 }}
-      </q-card-section>
-
-      <q-btn v-bind:href=link1 flat> {{ titulo2 }} </q-btn>
-    </q-card>
-
-    <q-card dark bordered class="bg-grey-9 my-card">
-      <q-card-section>
-        <div class="text-h6">{{ titulo3 }}</div>
-      </q-card-section>
-      <q-card-section>
-        {{ texto3 }}
-      </q-card-section>
-
-      <q-btn v-bind:href=link1 flat> {{ titulo3 }} </q-btn>
-    </q-card>
-
-    <q-card dark bordered class="bg-grey-9 my-card">
-      <q-card-section>
-        <div class="text-h6">{{ titulo4 }}</div>
-      </q-card-section>
-
-      <q-card-section>
-        {{ texto4 }}
-      </q-card-section>
-
-      <q-btn v-bind:href=link1 flat> {{ titulo4 }} </q-btn>
-    </q-card>
-
+        <q-tabs v-model="tab" align="justify">
+          <q-tab name="professor" label="professor" />
+          <q-tab name="estudante" label="estudante" />
+          <q-tab name="disciplinas" label="disciplinas" />
+        </q-tabs>
+      </q-header>
+      <q-page-container>
+        <q-page class="flat">
+          <q-tab-panels v-model="tab">
+            <q-tab-panel name="professor" align="center" >
+              <p>{{ textoProfessor }}</p>
+              <q-btn to="professor" target="_blank" >{{ textoBotao }}</q-btn>
+            </q-tab-panel>
+            <q-tab-panel name="estudante" align="center">
+              <p>{{ textoAluno }}</p>
+              <q-btn to="estudante" target="_blank" >{{ textoBotao }}</q-btn>
+            </q-tab-panel>
+            <q-tab-panel name="disciplinas" align="center">
+              <p>{{ textoCurso }}</p>
+              <q-btn to="disciplinas" target="_blank" >{{ textoBotao }}</q-btn>
+            </q-tab-panel>
+          </q-tab-panels>
+        </q-page>
+      </q-page-container>
+    </q-layout>
   </div>
 </template>
-
 <script>
+
 export default {
-  setup () {
+  data () {
     return {
-      lorem: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-      texto1: 'Bem vindo ao UniSystem, aqui é possível consultar tudo o que for necessário da sua universidade',
-      titulo2: 'Aluno',
-      texto2: 'Aqui você pode consultar suas notas e provas',
-      titulo3: 'Professor',
-      texto3: 'Consulte as salas, provas e horários de um professor',
-      titulo4: 'Cursos',
-      texto4: 'Consulte as disciplinas ofertadas',
-      link1: 'https://google.com'
+      textoProfessor: 'selecione o botão acessar para consultar ou editar informações sobre professores',
+      textoAluno: 'selecione o botão acessar para consultar ou editar informações sobre alunos',
+      textoCurso: 'selecione o botão acessar para consultar ou editar informações sobre cursos',
+      textoBotao: 'Acessar'
     }
   }
 }
 </script>
 
-<style lang="sass" scoped>
-.my-card
-  width: 100%
-  max-width: 250px
-</style>
+<script setup>
+import { ref } from 'vue'
+const tab = ref('professor')
+</script>

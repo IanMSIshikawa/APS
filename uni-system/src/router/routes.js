@@ -1,14 +1,24 @@
 const routes = [
   {
-    // path: '/',
-    // component: () => import('layouts/MainLayout.vue'),
-    // children: [
-    //   { path: '', component: () => import('pages/Index.vue') }
-    // ]
     path: '/',
-    component: () => import('pages/disciplina/Disciplina.vue')
+    component: () => import('pages/paginaGuia.vue')
   },
-
+  {
+    path: '/login',
+    component: () => import('../pages/paginaLogin.vue')
+  },
+  {
+    path: '/estudante',
+    component: () => import('../pages/paginaLogin.vue')
+  },
+  {
+    path: '/professor',
+    component: () => import('../pages/paginaLogin.vue')
+  },
+  {
+    path: '/disciplinas',
+    component: () => import('../pages/paginaLogin.vue')
+  },
   // Always leave this as last one,
   // but you can also remove it
   {
