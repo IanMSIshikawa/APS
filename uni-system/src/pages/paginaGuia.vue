@@ -17,15 +17,15 @@
           <q-tab-panels v-model="tab">
             <q-tab-panel name="professor" align="center" >
               <p>{{ textoProfessor }}</p>
-              <q-btn to="professor" target="_blank" >{{ textoBotao }}</q-btn>
+              <q-btn to="professor">{{ textoBotao }}</q-btn>
             </q-tab-panel>
             <q-tab-panel name="estudante" align="center">
               <p>{{ textoAluno }}</p>
-              <q-btn to="estudante" target="_blank" >{{ textoBotao }}</q-btn>
+              <q-btn to="estudante">{{ textoBotao }}</q-btn>
             </q-tab-panel>
             <q-tab-panel name="disciplinas" align="center">
               <p>{{ textoCurso }}</p>
-              <q-btn to="disciplinas" target="_blank" >{{ textoBotao }}</q-btn>
+              <q-btn to="disciplinas">{{ textoBotao }}</q-btn>
             </q-tab-panel>
           </q-tab-panels>
         </q-page>
@@ -38,9 +38,9 @@
 export default {
   data () {
     return {
-      textoProfessor: 'selecione o botão acessar para consultar ou editar informações sobre professores',
-      textoAluno: 'selecione o botão acessar para consultar ou editar informações sobre alunos',
-      textoCurso: 'selecione o botão acessar para consultar ou editar informações sobre cursos',
+      textoProfessor: 'Selecione o botão acessar para consultar ou editar informações sobre professores',
+      textoAluno: 'Selecione o botão acessar para consultar ou editar informações sobre alunos',
+      textoCurso: 'Selecione o botão acessar para consultar ou editar informações sobre cursos',
       textoBotao: 'Acessar'
     }
   }

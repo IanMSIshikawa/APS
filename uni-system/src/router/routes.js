@@ -9,15 +9,19 @@ const routes = [
   },
   {
     path: '/estudante',
-    component: () => import('../pages/paginaLogin.vue')
+    component: () => import('../pages/students/Students.vue')
   },
   {
     path: '/professor',
-    component: () => import('../pages/paginaLogin.vue')
+    component: () => import('../pages/professor/Professor.vue')
   },
   {
     path: '/disciplinas',
-    component: () => import('../pages/paginaLogin.vue')
+    component: () => import('../pages/disciplina/Disciplina.vue')
+  },
+  {
+    path: '/estudanteId',
+    component: () => import('../pages/students/StudentDetails.vue')
   },
   // Always leave this as last one,
   // but you can also remove it

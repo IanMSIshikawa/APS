@@ -140,7 +140,7 @@ export default {
 <style lang="scss" scoped>
 
 .header {
-  background: rgb(194, 229, 194);
+  background: rgb(173,216,230);
   text-align: left;
 }
 .actionButton {

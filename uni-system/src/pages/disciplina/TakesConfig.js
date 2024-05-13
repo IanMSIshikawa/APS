@@ -55,7 +55,7 @@ const TableColumns = [
     align: 'left',
     field: 'class_time',
     style: 'width 60px'
-  },
+  }
 ]
 
 const dummyTake = [

@@ -61,6 +61,7 @@
                 v-if="col.name === 'actions'"
                 class="actionButton">
                 <q-btn
+                  to="estudanteId"
                   padding="10px 50px"
                   size="14px"
                   label="Visualizar"
