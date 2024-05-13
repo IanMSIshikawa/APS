@@ -1,11 +1,11 @@
 const routes = [
   {
     path: '/',
-    component: () => import('pages/paginaGuia.vue')
+    component: () => import('pages/paginaLogin.vue')
   },
   {
-    path: '/login',
-    component: () => import('../pages/paginaLogin.vue')
+    path: '/guia',
+    component: () => import('../pages/paginaGuia.vue')
   },
   {
     path: '/estudante',

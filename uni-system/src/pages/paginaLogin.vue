@@ -16,14 +16,21 @@
           filled
           v-model="password"
           label="Senha"
+          :type = "isPwd ? 'password' : 'text'"
           lazy-rules
-          :rules="[
-            val => val !== null && val !== '' || 'Digite uma senha válida'
-          ]"
-        />
+          :rules="[val => val !== null && val !== '' || 'Digite uma senha válida']"
+        >
+        <template v-slot:append>
+          <q-icon
+            :name="isPwd ? 'visibility_off' : 'visibility'"
+            class="cursor-pointer"
+            @click="isPwd = !isPwd"
+          />
+        </template>
+        </q-input>
 
         <div>
-          <q-btn label="Entrar" type="submit" color="primary"/>
+          <q-btn to="guia" label="Entrar" type="submit" color="primary"/>
           <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
         </div>
       </q-form>
@@ -34,27 +41,21 @@ import { ref } from 'vue'
 
 export default {
   setup () {
-    const name = ref(null)
-    const age = ref(null)
-    const accept = ref(true)
+    const user = ref(null)
+    const password = ref(null)
+    const isPwd = ref(true)
 
     return {
-      name,
-      age,
-      accept,
+      user,
+      password,
+      isPwd,
 
       onSubmit () {
-        if (accept.value !== true) {
-          console.log('aceito')
-        } else {
-          console.log('negado')
-        }
       },
 
       onReset () {
-        name.value = null
-        age.value = null
-        accept.value = true
+        user.value = null
+        password.value = null
       }
     }
   }
