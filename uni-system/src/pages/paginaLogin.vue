@@ -1,5 +1,9 @@
 <template>
-    <div class="q-pa-md" style="max-width: 400px">
+    <div>
+    <q-layout>
+    <q-page-container>
+     <q-page class="bg-light text-center">
+    <div class="q-pa-md centered" style="max-width: 400px">
       <q-form
         @submit="onSubmit"
         @reset="onReset"
@@ -8,9 +12,9 @@
         <q-input
           filled
           v-model="user"
-          label="Usuario"
+          label="Usuário"
           lazy-rules
-          :rules="[ val => val && val.length > 0 || 'Insira um usuario valido']"
+          :rules="[ val => val && val.length > 0 || 'Insira um usuário válido']"
         />
         <q-input
           filled
@@ -35,6 +39,11 @@
         </div>
       </q-form>
     </div>
+    </q-page>
+    </q-page-container>
+    </q-layout>
+    </div>
+
 </template>
 <script>
 import { ref } from 'vue'
@@ -61,3 +70,20 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.window-height {
+  height: 100vh;
+}
+
+.window-width {
+  width: 100vw;
+}
+.centered {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+</style>
