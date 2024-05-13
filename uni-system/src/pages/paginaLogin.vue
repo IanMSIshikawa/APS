@@ -7,27 +7,23 @@
       >
         <q-input
           filled
-          v-model="name"
-          label="Your name *"
-          hint="Name and surname"
+          v-model="user"
+          label="Usuario"
           lazy-rules
-          :rules="[ val => val && val.length > 0 || 'Please type something']"
+          :rules="[ val => val && val.length > 0 || 'Insira um usuario valido']"
         />
         <q-input
           filled
-          type="number"
-          v-model="age"
-          label="Your age *"
+          v-model="password"
+          label="Senha"
           lazy-rules
           :rules="[
-            val => val !== null && val !== '' || 'Please type your age',
-            val => val > 0 && val < 100 || 'Please type a real age'
+            val => val !== null && val !== '' || 'Digite uma senha válida'
           ]"
         />
 
-        <q-toggle v-model="accept" label="I accept the license and terms" />
         <div>
-          <q-btn label="Submit" type="submit" color="primary"/>
+          <q-btn label="Entrar" type="submit" color="primary"/>
           <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
         </div>
       </q-form>
@@ -40,7 +36,7 @@ export default {
   setup () {
     const name = ref(null)
     const age = ref(null)
-    const accept = ref(false)
+    const accept = ref(true)
 
     return {
       name,
@@ -58,7 +54,7 @@ export default {
       onReset () {
         name.value = null
         age.value = null
-        accept.value = false
+        accept.value = true
       }
     }
   }
