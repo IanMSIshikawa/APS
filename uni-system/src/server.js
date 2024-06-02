@@ -4,7 +4,7 @@ const cors = require('cors');
 const mysql = require('mysql');
 
 const app = express();
-const port = 3000;
+const port = 4000;
 
 // Configuração do CORS
 app.use(cors());
@@ -26,10 +26,18 @@ db.connect(err => {
   console.log('Conectado ao banco de dados.');
 });
 
-// Rota de teste
-app.get('src/pages/paginaLogin', (req, res) => {
-  res.send('API funcionando!');
-});
+// Rota para buscar informações
+app.get('/api/items', (req, res) => {
+    const sql = 'select * from student limit 1';
+    db.query(sql, (err, results) => {
+      if (err) {
+        return res.status(500).send('Erro ao obter dados.');
+      }
+      res.json(results);
+    });
+  });
+
+
 
 // Iniciar o servidor
 app.listen(port, () => {

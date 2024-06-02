@@ -34,6 +34,9 @@
           <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
         </div>
       </q-form>
+      <div>
+        {{ password }}
+      </div>
     </div>
 </template>
 <script>
@@ -45,15 +48,16 @@ export default {
     const user = ref(null)
     const password = ref(null)
     const isPwd = ref(true)
+    const test = ''
 
     return {
       user,
       password,
       isPwd,
+      test,
 
       onSubmit () {
       },
-
       onReset () {
         user.value = null
         password.value = null
@@ -61,13 +65,14 @@ export default {
     }
   },
   created () {
-    this.fetchMessage()
+    this.fetchTest()
   },
   methods: {
-    async fetchMessage () {
+    async fetchTest () {
       try {
-        const response = await axios.get('http://localhost:3000/src/pages/paginaLogin')
-        this.user = response.data
+        const response = await axios.get('http://localhost:4000/api/items')
+        this.password = response.data
+        // this.password = 'POHAAAAA'
       } catch (error) {
         console.error('Erro ao buscar mensagem:', error)
       }
