@@ -38,6 +38,7 @@
 </template>
 <script>
 import { ref } from 'vue'
+import axios from 'axios'
 
 export default {
   setup () {
@@ -56,6 +57,19 @@ export default {
       onReset () {
         user.value = null
         password.value = null
+      }
+    }
+  },
+  created () {
+    this.fetchMessage()
+  },
+  methods: {
+    async fetchMessage () {
+      try {
+        const response = await axios.get('http://localhost:3000/src/pages/paginaLogin')
+        this.user = response.data
+      } catch (error) {
+        console.error('Erro ao buscar mensagem:', error)
       }
     }
   }
