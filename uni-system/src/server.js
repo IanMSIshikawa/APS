@@ -2,6 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mysql = require('mysql');
+//alterar em cada maquina 
+const psw = 'Db_12345678';
+const database = 'university'
 
 const app = express();
 const port = 4000;
@@ -14,8 +17,8 @@ app.use(bodyParser.json());
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'Db_12345678',
-  database: 'university'
+  password: psw,
+  database: database
 });
 
 db.connect(err => {
