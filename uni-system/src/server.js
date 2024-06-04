@@ -4,10 +4,10 @@ const cors = require('cors');
 const mysql = require('mysql');
 //alterar em cada maquina 
 const psw = 'Db_12345678';
-const database = 'university'
+const database = 'UniSystem'
 
 const app = express();
-const port = 4000;
+const port = 4000;//pode ser necessario alterar
 
 // Configuração do CORS
 app.use(cors());
@@ -30,15 +30,17 @@ db.connect(err => {
 });
 
 // Rota para buscar informações
-app.get('/api/items', (req, res) => {
-    const sql = 'select * from student limit 1';
-    db.query(sql, (err, results) => {
-      if (err) {
-        return res.status(500).send('Erro ao obter dados.');
-      }
-      res.json(results);
-    });
+app.get('/login/check/:user', (req, res) => {
+  const user = req.params.user
+  const sql = 'select user_password from users where user_name = ?';
+  db.query(sql, [user], (err, results) => {
+    if (err) {
+      return res.status(500).send('Erro ao obter usuario e senha.');
+    }
+    console.log(`Busquei no banco de dados ${results}`)
+    res.send(results);
   });
+});
 
 
 
