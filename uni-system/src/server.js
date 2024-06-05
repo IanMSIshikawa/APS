@@ -3,8 +3,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mysql = require('mysql');
 //alterar em cada maquina 
-const psw = 'Chucrute2280';
-const database = 'uniSystem'
+const psw = 'Db_12345678';
+const database = 'UniSystem'
 
 const app = express();
 const port = 4000;//pode ser necessario alterar
@@ -118,6 +118,17 @@ app.get('/get/professorCourse/:userId/:professorId', (req, res) => {
     }
     console.log(`Busquei no banco de dados ${results}`)
     res.send(results);
+  });
+});
+
+//Rotas para deletar
+app.delete('/delete/professor/:id', (req, res) => {
+  const professorId = req.params.id
+  console.log(professorId)
+  const sql = 'delete from professor where professor_id = ?';
+  db.query(sql, [professorId], (err, result) => {
+    if (err) throw err;
+    res.send(`Professor com ID ${professorId} deletado com sucesso.`);
   });
 });
 

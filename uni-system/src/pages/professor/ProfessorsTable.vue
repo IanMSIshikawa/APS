@@ -71,6 +71,7 @@
                   color="red"
                   class="full-height cursor-pointer q-ml-xs"
                   size="30px"
+                  @click="deleteProfessor(item.professor_id)"
                 />
               </div>
               <span
@@ -86,6 +87,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import { TableColumnsName, TableColumns } from './ProfessorConfig'
 
 export default {
@@ -101,9 +103,24 @@ export default {
       Columns: TableColumns
     }
   },
+  mounted: function () {
+  },
   methods: {
     viewStudent: async function (id) {
       await this.$router.push({ name: this.$RouteNames.STUDENTS.STUDENT_EDIT.NAME, params: { id: id } })
+    },
+    deleteProfessor: async function (id) {
+      try {
+        await axios.delete(`http://localhost:4000/delete/professor/${id}`)
+        this.$q.notify({
+          color: 'positive',
+          position: 'top',
+          message: `Professor de id:${id} deletado com sucesso`
+        })
+        this.$emit('save-professor')
+      } catch (error) {
+        console.error('Erro ao deletar professor:', error.response ? error.response.data : error.message)
+      }
     }
   }
 }

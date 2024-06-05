@@ -25,6 +25,7 @@
           >
             <professors-table
               :_professors="professors"
+              @save-professor="saveAndReloadRegisterProfessor"
             />
           </div>
           <q-card
