@@ -42,6 +42,18 @@ app.get('/login/check/:user', (req, res) => {
   });
 });
 
+// Rota para inserir informações
+app.post('/insert/user', (req, res) => {
+  const {user_name, user_password} = req.body;
+  const sql = 'INSERT INTO users (user_name, user_password) values (?, ?)';
+  db.query(sql, [user_name, user_password], (err, result) => {
+    if (err) {
+      return res.status(500).send('Erro ao inserir dados.');
+    }
+    res.status(201).send('Item inserido com sucesso.');
+  });
+});
+
 
 
 // Iniciar o servidor

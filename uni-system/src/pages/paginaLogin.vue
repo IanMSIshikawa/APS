@@ -1,16 +1,19 @@
 <template>
-    <div class="q-pa-md" style="max-width: 400px">
+    <div>
+    <q-layout>
+    <q-page-container>
+     <q-page class="bg-light text-center">
+    <div class="q-pa-md centered" style="max-width: 400px">
       <q-form
         @submit="onSubmit"
-        @reset="onReset"
         class="q-gutter-md"
       >
         <q-input
           filled
           v-model="user"
-          label="Usuario"
+          label="Usuário"
           lazy-rules
-          :rules="[ val => val && val.length > 0 || 'Insira um usuario valido']"
+          :rules="[ val => val && val.length > 0 || 'Insira um usuário válido']"
         />
         <q-input
           filled
@@ -31,10 +34,19 @@
 
         <div>
           <q-btn label="Entrar" type="submit" color="primary" @click = "checkLogin(user, password)"/>
-          <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
+          <q-btn label="Cadastrar" @click = "openRegisterDialog" color="primary" flat class="q-ml-sm" />
         </div>
       </q-form>
+      <register
+            :_is-open="isRegisterOpen"
+            @close-dialog="closeRegisterDialog"
+      />
     </div>
+    </q-page>
+    </q-page-container>
+    </q-layout>
+    </div>
+
 </template>
 <script>
 import { ref } from 'vue'
@@ -51,11 +63,15 @@ export default {
 
       onSubmit () {
 
-      },
-      onReset () {
-        user.value = null
-        password.value = null
       }
+    }
+  },
+  components: {
+    Register: () => import('./register.vue')
+  },
+  data: function () {
+    return {
+      isRegisterOpen: false
     }
   },
   created () {
@@ -79,7 +95,30 @@ export default {
       } catch (error) {
         console.error('Erro ao checkar login:', error)
       }
+    },
+    openRegisterDialog: function () {
+      this.isRegisterOpen = true
+    },
+    closeRegisterDialog: function () {
+      this.isRegisterOpen = false
     }
   }
 }
 </script>
+
+<style scoped>
+.window-height {
+  height: 100vh;
+}
+
+.window-width {
+  width: 100vw;
+}
+.centered {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+</style>
