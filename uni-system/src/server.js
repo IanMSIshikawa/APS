@@ -135,9 +135,22 @@ app.get('/get/professorCourse/:userId/:professorId', (req, res) => {
 app.delete('/delete/professor/:id', (req, res) => {
   const professorId = req.params.id
   console.log(professorId)
-  const sql = 'delete from professor where professor_id = ?';
-  db.query(sql, [professorId], (err, result) => {
-    if (err) throw err;
+  const sql = `
+              DELETE FROM professor 
+              WHERE professor_id = ? 
+              AND NOT EXISTS (
+              SELECT 1 
+              FROM courses 
+              WHERE courses.professor_id = ?
+            )
+          `;
+  db.query(sql, [professorId, professorId], (err, result) => {
+    if (err) {
+      return res.status(500).send('Erro ao deletar professor');
+    }
+    if (result.affectedRows === 0) {
+      return res.status(404).send(`Professor com ID ${professorId} não pode ser deletado ou não existe.`);
+    }
     res.send(`Professor com ID ${professorId} deletado com sucesso.`);
   });
 });

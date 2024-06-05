@@ -120,6 +120,11 @@ export default {
         this.$emit('save-professor')
       } catch (error) {
         console.error('Erro ao deletar professor:', error.response ? error.response.data : error.message)
+        this.$q.notify({
+          color: 'negative',
+          position: 'top',
+          message: `Não foi possível deletar o professor de id:${id}`
+        })
       }
     }
   }
