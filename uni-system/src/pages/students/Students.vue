@@ -43,18 +43,27 @@
 </template>
 
 <script>
-import { dummyStudent } from './studentConfig.js'
+import axios from 'axios'
 
 export default {
   components: {
     StudentRegister: () => import('./StudentRegister.vue'),
     StudentsTable: () => import('./StudentsTable.vue')
   },
+  props: {
+    id: {
+      type: [Number, String],
+      required: true
+    }
+  },
   data: function () {
     return {
       isRegisterStudentOpen: false,
-      students: dummyStudent
+      students: []
     }
+  },
+  mounted: async function () {
+    await this.getStudents(this.id)
   },
   methods: {
     openRegisterStudentDialog: function () {
@@ -65,6 +74,24 @@ export default {
     },
     saveAndReloadRegisterStudent: function () {
       this.isRegisterStudentOpen = false
+    },
+    getStudents: async function (id) {
+      try {
+        const response = await axios.get(`http://localhost:4000/get/estudante/${id}`)
+        const data = response.data
+        if (data != null) {
+          this.students = data
+        } else {
+          this.$q.notify({
+            color: 'negative',
+            position: 'top',
+            message: 'Condição não atendida!',
+            icon: 'warning'
+          })
+        }
+      } catch (error) {
+        console.error('Erro ao checkar login:', error)
+      }
     }
   }
 }
