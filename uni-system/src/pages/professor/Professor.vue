@@ -79,7 +79,7 @@ export default {
     },
     getProfessors: async function (id) {
       try {
-        const response = await axios.get('http://localhost:4000/get/professor/', { user_id: id })
+        const response = await axios.get(`http://localhost:4000/get/professor/${id}`)
         const data = response.data
         if (data != null) {
           this.professors = data

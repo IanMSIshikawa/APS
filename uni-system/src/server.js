@@ -71,8 +71,8 @@ app.get('/login/check/:user', (req, res) => {
   });
 });
 
-app.get('/get/professor/', (req, res) => {
-  const {user_id} = req.body
+app.get('/get/professor/:user', (req, res) => {
+  const user_id = req.params.user;
   const sql = 'select * from professor where user_id = ?';
   db.query(sql, [user_id], (err, results) => {
     if (err) {
