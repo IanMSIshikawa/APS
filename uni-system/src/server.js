@@ -3,8 +3,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mysql = require('mysql');
 //alterar em cada maquina 
-const psw = 'Db_12345678';
-const database = 'UniSystem'
+const psw = 'Chucrute2280';
+const database = 'uniSystem'
 
 const app = express();
 const port = 4000;//pode ser necessario alterar
@@ -34,10 +34,13 @@ db.connect(err => {
 // Rota para inserir informações
 app.post('/insert/user', (req, res) => {
   const {user_name, user_password} = req.body;
-  const sql = 'INSERT INTO users (user_name, user_password) values (?, ?)';
-  db.query(sql, [user_name, user_password], (err, result) => {
+  const sql = 'INSERT INTO users (user_name, user_password) SELECT ?, ? WHERE NOT EXISTS (SELECT 1 FROM users WHERE user_name = ?)';
+  db.query(sql, [user_name, user_password, user_name], (err, result) => {
     if (err) {
       return res.status(500).send('Erro ao inserir dados.');
+    }
+    if (result.affectedRows === 0) {
+      return res.status(409).send('Usuário já existe.');
     }
     res.status(201).send('Item inserido com sucesso.');
   });
@@ -68,8 +71,8 @@ app.get('/login/check/:user', (req, res) => {
   });
 });
 
-app.get('/get/professor/:userId', (req, res) => {
-  const user_id = req.params.userId
+app.get('/get/professor/', (req, res) => {
+  const {user_id} = req.body
   const sql = 'select * from professor where user_id = ?';
   db.query(sql, [user_id], (err, results) => {
     if (err) {

@@ -38,8 +38,8 @@
         </div>
       </q-form>
       <register
-            :_is-open="isRegisterOpen"
-            @close-dialog="closeRegisterDialog"
+        :_is-open="isRegisterOpen"
+        @close-dialog="closeRegisterDialog"
       />
     </div>
     </q-page>

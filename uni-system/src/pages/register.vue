@@ -37,13 +37,23 @@
               >
                 <q-input
                   v-model="password"
-                  label="Password"
-                  type="text"
+                  label="Senha"
+                  :type = "isPwd ? 'password' : 'text'"
+                  lazy-rules
                   required
                   outlined
                   dense
+                  :rules="[val => val !== null && val !== '' || 'Digite uma senha válida']"
                   style="width: 800px"
-                />
+                >
+                  <template v-slot:append>
+                    <q-icon
+                      :name="isPwd ? 'visibility_off' : 'visibility'"
+                      class="cursor-pointer"
+                      @click="isPwd = !isPwd"
+                    />
+                  </template>
+                </q-input>
               </div>
               <div
                 class="row justify-center align-center q-mb-lg"
@@ -101,7 +111,8 @@ export default {
     return {
       name: '',
       password: '',
-      isOpen: false
+      isOpen: false,
+      isPwd: true
     }
   },
   methods: {

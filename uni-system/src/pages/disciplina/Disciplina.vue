@@ -82,9 +82,7 @@ export default {
         if (data != null) {
           this.takes = data
           for (const take of this.takes) {
-            console.log(take, 'AAAAAA')
             take.professor_name = await this.getProfessorName(id, take.professor_id)
-            console.log(take, 'TESTE')
           }
         } else {
           this.$q.notify({
