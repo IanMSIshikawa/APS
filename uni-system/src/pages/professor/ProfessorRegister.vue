@@ -85,7 +85,7 @@
                   size="lg"
                   no-caps
                   class="save-button"
-                  @click="addProfessor(id)"
+                  @click="saveRegisterProfessor(id)"
                 >
                 </q-btn>
               </q-card-actions>
@@ -132,14 +132,20 @@ export default {
     closeDialog: function () {
       this.$emit('close-dialog')
     },
-    saveRegisterProfessor: function () {
+    saveRegisterProfessor: async function (id) {
+      await this.addProfessor(id)
       this.$emit('save-professor')
     },
     async addProfessor (UserId) {
       try {
         await axios.post('http://localhost:4000/insert/professor/', { user_id: UserId, professor_name: this.professorName, professor_email: this.professorEmail, dept_name: this.professorDepartment })
+        this.$q.notify({
+          color: 'positive',
+          position: 'top',
+          message: 'Cadastro realizado com sucesso!'
+        })
       } catch (error) {
-        console.error('Erro ao adicionar item:', error.response ? error.response.data : error.message)
+        console.error('Erro ao cadastrar professor:', error.response ? error.response.data : error.message)
       }
     }
   }

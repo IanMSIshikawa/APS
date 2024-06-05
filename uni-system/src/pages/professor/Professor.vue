@@ -15,9 +15,9 @@
           </div>
           <professor-register
             :_is-open="isRegisterProfessorOpen"
+            :id="id"
             @close-dialog="closeRegisterDialog"
             @save-professor="saveAndReloadRegisterProfessor"
-            @id="id"
           />
           <div
             v-if="professors.length"
@@ -73,8 +73,9 @@ export default {
     closeRegisterDialog: function () {
       this.isRegisterProfessorOpen = false
     },
-    saveAndReloadRegisterProfessor: function () {
+    saveAndReloadRegisterProfessor: async function () {
       this.isRegisterProfessorOpen = false
+      await this.getProfessors(this.id)
     },
     getProfessors: async function (id) {
       try {
