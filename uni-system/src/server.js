@@ -48,7 +48,6 @@ app.post('/insert/user', (req, res) => {
 
 app.post('/insert/professor/', (req, res) => {
   const {user_id, professor_name, professor_email, dept_name} = req.body;
-  console.log(user_id, professor_name, professor_email, dept_name);
   const sql = 'INSERT INTO professor (user_id, professor_name, professor_email, dept_name, deleted) values (?, ?, ?, ?, ?)';
   db.query(sql, [user_id, professor_name, professor_email, dept_name, 0], (err, result) => {
     if (err) {
@@ -57,6 +56,17 @@ app.post('/insert/professor/', (req, res) => {
     res.status(201).send('Item inserido com sucesso.');
   });
 });
+
+app.post('/insert/disciplina/', (req, res) => {
+  const {user_id, course_name, professor_id, class_room, class_time, class_weekday} = req.body;
+  const sql = 'INSERT INTO courses (user_id, course_name, professor_id, class_room, class_time, class_weekday) values (?, ?, ?, ?, ?, ?)'
+  db.query(sql, [user_id, course_name, professor_id, class_room, class_time, class_weekday], (err, result) => {
+    if (err) {
+      return res.status(500).send('Erro ao inserir dados.');
+    }
+    res.status(201).send('Item inserido com sucesso.');
+  });
+})
 
 // Rota para buscar informações
 app.get('/login/check/:user', (req, res) => {

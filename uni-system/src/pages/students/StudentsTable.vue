@@ -61,7 +61,6 @@
                 v-if="col.name === 'actions'"
                 class="actionButton">
                 <q-btn
-                  to="estudanteId"
                   padding="10px 50px"
                   size="14px"
                   label="Visualizar"
@@ -69,6 +68,7 @@
                   unelevated
                   borderless
                   outline
+                  @click="viewStudent(item.student_id)"
                 >
                 </q-btn>
               </div>
@@ -92,6 +92,10 @@ export default {
     _students: {
       type: Array,
       require: true
+    },
+    id: {
+      type: [Number, String],
+      require: true
     }
   },
   data: function () {
@@ -101,8 +105,8 @@ export default {
     }
   },
   methods: {
-    viewStudent: async function (id) {
-      await this.$router.push({ name: this.$RouteNames.STUDENTS.STUDENT_EDIT.NAME, params: { id: id } })
+    viewStudent: async function (studentId) {
+      await this.$router.push({ name: 'EstudanteID', params: { userId: this.id, id: studentId } })
     }
   }
 }

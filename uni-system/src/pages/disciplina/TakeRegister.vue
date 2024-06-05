@@ -52,10 +52,10 @@
             <div
               class="row justify-center align-center q-mb-lg"
             >
-              <q-input
+              <q-select
                 v-model="takeDay"
+                :options="dayOptions"
                 label="Dia da Disciplina"
-                type="text"
                 required
                 outlined
                 dense
@@ -90,6 +90,7 @@
               <q-select
                 v-model="takeProfessor"
                 :options="options"
+                option-label="name"
                 label="Professor"
                 required
                 outlined
@@ -133,12 +134,17 @@
 </template>
 
 <script>
+import axios from 'axios'
 
 export default {
   props: {
     _isOpen: {
       type: Boolean,
       require: true
+    },
+    _id: {
+      type: [Number, String],
+      required: true
     }
   },
   watch: {
@@ -157,15 +163,50 @@ export default {
       takeTime: '',
       takeProfessor: '',
       options: [],
+      dayOptions: ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
       isOpen: false
     }
+  },
+  mounted: async function () {
+    await this.getProfessorsNames(this._id)
   },
   methods: {
     closeDialog: function () {
       this.$emit('close-dialog')
     },
-    saveRegisterTake: function () {
+    saveRegisterTake: async function () {
+      await this.addTake(this._id)
       this.$emit('save-take')
+    },
+    getProfessorsNames: async function (id) {
+      try {
+        const response = await axios.get(`http://localhost:4000/get/professor/${id}`)
+        const data = response.data
+        if (data != null) {
+          this.options = data.map(professor => ({ name: professor.professor_name, id: professor.professor_id }))
+        } else {
+          this.$q.notify({
+            color: 'negative',
+            position: 'top',
+            message: 'Condição não atendida!',
+            icon: 'warning'
+          })
+        }
+      } catch (error) {
+        console.error('Erro ao checkar login:', error)
+      }
+    },
+    addTake: async function (UserId) {
+      try {
+        await axios.post('http://localhost:4000/insert/disciplina/', { user_id: UserId, course_name: this.takeName, professor_id: this.takeProfessor.id, class_room: this.takeRoom, class_time: this.takeTime, class_weekday: this.takeDay })
+        this.$q.notify({
+          color: 'positive',
+          position: 'top',
+          message: 'Cadastro realizado com sucesso!'
+        })
+      } catch (error) {
+        console.error('Erro ao cadastrar disciplina:', error.response ? error.response.data : error.message)
+      }
     }
   }
 }

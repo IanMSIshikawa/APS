@@ -10,7 +10,6 @@
                 label="Deletar aluno"
                 no-caps
                 class="delete-button"
-                @click="deleteRegisterStudent"
               >
               </q-btn>
               <q-btn
@@ -18,7 +17,6 @@
                 color="primary"
                 no-caps
                 class="save-button"
-                @click="saveRegisterStudent"
               >
               </q-btn>
             </div>
@@ -74,6 +72,10 @@ export default {
   },
   props: {
     id: {
+      type: [Number, String],
+      require: true
+    },
+    user_id: {
       type: [Number, String],
       require: true
     }

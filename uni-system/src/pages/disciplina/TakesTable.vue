@@ -102,9 +102,7 @@ export default {
     }
   },
   methods: {
-    viewStudent: async function (id) {
-      await this.$router.push({ name: this.$RouteNames.STUDENTS.STUDENT_EDIT.NAME, params: { id: id } })
-    }
+
   }
 }
 </script>

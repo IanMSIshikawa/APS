@@ -15,6 +15,7 @@
           </div>
           <take-register
             :_is-open="isRegisterDisciplinaOpen"
+            :_id="id"
             @close-dialog="closeRegisterDialog"
             @save-take="saveAndReloadRegisterDisciplina"
           />
@@ -72,8 +73,9 @@ export default {
     closeRegisterDialog: function () {
       this.isRegisterDisciplinaOpen = false
     },
-    saveAndReloadRegisterDisciplina: function () {
+    saveAndReloadRegisterDisciplina: async function () {
       this.isRegisterDisciplinaOpen = false
+      await this.getCourses(this.id)
     },
     getCourses: async function (id) {
       try {

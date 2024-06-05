@@ -24,6 +24,7 @@
           >
             <students-table
               :_students="students"
+              :id="id"
             />
           </div>
           <q-card
