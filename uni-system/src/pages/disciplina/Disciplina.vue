@@ -43,18 +43,27 @@
 </template>
 
 <script>
-import { dummyTake } from './TakesConfig'
+import axios from 'axios'
 
 export default {
   components: {
     TakeRegister: () => import('./TakeRegister.vue'),
     TakesTable: () => import('./TakesTable.vue')
   },
+  props: {
+    id: {
+      type: [Number, String],
+      required: true
+    }
+  },
   data: function () {
     return {
       isRegisterDisciplinaOpen: false,
-      takes: dummyTake
+      takes: []
     }
+  },
+  mounted: async function () {
+    await this.getCourses(this.id)
   },
   methods: {
     openRegisterDisciplinaDialog: function () {
@@ -65,6 +74,48 @@ export default {
     },
     saveAndReloadRegisterDisciplina: function () {
       this.isRegisterDisciplinaOpen = false
+    },
+    getCourses: async function (id) {
+      try {
+        const response = await axios.get(`http://localhost:4000/get/disciplina/${id}`)
+        const data = response.data
+        if (data != null) {
+          this.takes = data
+          for (const take of this.takes) {
+            console.log(take, 'AAAAAA')
+            take.professor_name = await this.getProfessorName(id, take.professor_id)
+            console.log(take, 'TESTE')
+          }
+        } else {
+          this.$q.notify({
+            color: 'negative',
+            position: 'top',
+            message: 'Condição não atendida!',
+            icon: 'warning'
+          })
+        }
+      } catch (error) {
+        console.error('Erro ao checkar login:', error)
+      }
+    },
+    getProfessorName: async function (userId, professorId) {
+      try {
+        const response = await axios.get(`http://localhost:4000/get/professorCourse/${userId}/${professorId}`)
+        const data = response.data
+        const professorName = data[0].professor_name
+        if (data != null) {
+          return professorName
+        } else {
+          this.$q.notify({
+            color: 'negative',
+            position: 'top',
+            message: 'Condição não atendida!',
+            icon: 'warning'
+          })
+        }
+      } catch (error) {
+        console.error('Erro ao checkar login:', error)
+      }
     }
   }
 }

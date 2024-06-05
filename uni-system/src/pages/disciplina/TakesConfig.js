@@ -21,7 +21,7 @@ const TableColumns = [
     name: TableColumnsName.NAME,
     label: 'Nome',
     align: 'left',
-    field: 'name',
+    field: 'course_name',
     style: 'width 60px'
   },
   {
@@ -45,7 +45,7 @@ const TableColumns = [
     name: TableColumnsName.CLASS_DAY,
     label: 'Dia da Semana',
     align: 'left',
-    field: 'class_day',
+    field: 'class_weekday',
     style: 'width 60px'
   },
   {

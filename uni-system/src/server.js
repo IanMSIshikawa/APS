@@ -3,8 +3,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mysql = require('mysql');
 //alterar em cada maquina 
-const psw = 'Db_12345678';
-const database = 'UniSystem'
+const psw = 'Chucrute2280';
+const database = 'unisystem'
 
 const app = express();
 const port = 4000;//pode ser necessario alterar
@@ -32,10 +32,60 @@ db.connect(err => {
 // Rota para buscar informações
 app.get('/login/check/:user', (req, res) => {
   const user = req.params.user
-  const sql = 'select user_password from users where user_name = ?';
+  const sql = 'select * from users where user_name = ?';
   db.query(sql, [user], (err, results) => {
     if (err) {
       return res.status(500).send('Erro ao obter usuario e senha.');
+    }
+    console.log(`Busquei no banco de dados ${results}`)
+    res.send(results);
+  });
+});
+
+app.get('/get/professor/:userId', (req, res) => {
+  const user_id = req.params.userId
+  const sql = 'select * from professor where user_id = ?';
+  db.query(sql, [user_id], (err, results) => {
+    if (err) {
+      return res.status(500).send('Erro ao obter professores');
+    }
+    console.log(`Busquei no banco de dados ${results}`)
+    res.send(results);
+  });
+});
+
+app.get('/get/estudante/:userId', (req, res) => {
+  const user_id = req.params.userId
+  const sql = 'select * from students where user_id = ?';
+  db.query(sql, [user_id], (err, results) => {
+    if (err) {
+      return res.status(500).send('Erro ao obter estudantes');
+    }
+    console.log(`Busquei no banco de dados ${results}`)
+    res.send(results);
+  });
+});
+
+app.get('/get/disciplina/:userId', (req, res) => {
+  const user_id = req.params.userId
+  const sql = 'select * from courses where user_id = ?';
+  db.query(sql, [user_id], (err, results) => {
+    if (err) {
+      return res.status(500).send('Erro ao obter disciplinas');
+    }
+    console.log(`Busquei no banco de dados ${results}`)
+    res.send(results);
+  });
+});
+
+
+app.get('/get/professorCourse/:userId/:professorId', (req, res) => {
+  const user_id = req.params.userId
+  const professor_id = req.params.professorId
+  const sql = 'select professor_name from professor where user_id = ? and professor_id = ?';
+  db.query(sql, [user_id, professor_id], (err, results) => {
+    if (err) {
+      return res.status(500).send('Erro ao obter disciplinas');
     }
     console.log(`Busquei no banco de dados ${results}`)
     res.send(results);

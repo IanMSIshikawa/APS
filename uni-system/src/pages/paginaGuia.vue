@@ -17,15 +17,15 @@
           <q-tab-panels v-model="tab">
             <q-tab-panel name="professor" align="center" >
               <p>{{ textoProfessor }}</p>
-              <q-btn to="professor">{{ textoBotao }}</q-btn>
+              <q-btn @click="goToProfessorPage()">{{ textoBotao }}</q-btn>
             </q-tab-panel>
             <q-tab-panel name="estudante" align="center">
               <p>{{ textoAluno }}</p>
-              <q-btn to="estudante">{{ textoBotao }}</q-btn>
+              <q-btn @click="goToStudentPage()">{{ textoBotao }}</q-btn>
             </q-tab-panel>
             <q-tab-panel name="disciplinas" align="center">
               <p>{{ textoCurso }}</p>
-              <q-btn to="disciplinas">{{ textoBotao }}</q-btn>
+              <q-btn @click="goToTaskPage()">{{ textoBotao }}</q-btn>
             </q-tab-panel>
           </q-tab-panels>
         </q-page>
@@ -36,12 +36,32 @@
 <script>
 
 export default {
+  props: {
+    id: {
+      type: [Number, String],
+      required: true
+    }
+  },
   data () {
     return {
       textoProfessor: 'Selecione o botão acessar para consultar ou editar informações sobre professores',
       textoAluno: 'Selecione o botão acessar para consultar ou editar informações sobre alunos',
       textoCurso: 'Selecione o botão acessar para consultar ou editar informações sobre cursos',
       textoBotao: 'Acessar'
+    }
+  },
+  mounted: function () {
+    console.log(this.id, 'ID')
+  },
+  methods: {
+    goToProfessorPage: function () {
+      this.$router.push({ name: 'Professor', params: { id: this.id } })
+    },
+    goToStudentPage: function () {
+      this.$router.push({ name: 'Estudante', params: { id: this.id } })
+    },
+    goToTaskPage: function () {
+      this.$router.push({ name: 'Disciplina', params: { id: this.id } })
     }
   }
 }

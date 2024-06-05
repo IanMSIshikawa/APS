@@ -43,18 +43,27 @@
 </template>
 
 <script>
-import { dummyProfessor } from './ProfessorConfig'
+import axios from 'axios'
 
 export default {
   components: {
     ProfessorRegister: () => import('./ProfessorRegister.vue'),
     ProfessorsTable: () => import('./ProfessorsTable.vue')
   },
+  props: {
+    id: {
+      type: [Number, String],
+      required: true
+    }
+  },
   data: function () {
     return {
       isRegisterProfessorOpen: false,
-      professors: dummyProfessor
+      professors: []
     }
+  },
+  mounted: async function () {
+    await this.getProfessors(this.id)
   },
   methods: {
     openRegisterProfessorDialog: function () {
@@ -65,6 +74,24 @@ export default {
     },
     saveAndReloadRegisterProfessor: function () {
       this.isRegisterProfessorOpen = false
+    },
+    getProfessors: async function (id) {
+      try {
+        const response = await axios.get(`http://localhost:4000/get/professor/${id}`)
+        const data = response.data
+        if (data != null) {
+          this.professors = data
+        } else {
+          this.$q.notify({
+            color: 'negative',
+            position: 'top',
+            message: 'Condição não atendida!',
+            icon: 'warning'
+          })
+        }
+      } catch (error) {
+        console.error('Erro ao checkar login:', error)
+      }
     }
   }
 }

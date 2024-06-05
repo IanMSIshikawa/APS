@@ -4,19 +4,27 @@ const routes = [
     component: () => import('pages/paginaLogin.vue')
   },
   {
-    path: '/guia',
+    path: '/guia/:id',
+    name: 'Guia',
+    props: true,
     component: () => import('../pages/paginaGuia.vue')
   },
   {
-    path: '/estudante',
+    path: '/estudante/:id',
+    name: 'Estudante',
+    props: true,
     component: () => import('../pages/students/Students.vue')
   },
   {
-    path: '/professor',
+    path: '/professor/:id',
+    name: 'Professor',
+    props: true,
     component: () => import('../pages/professor/Professor.vue')
   },
   {
-    path: '/disciplinas',
+    path: '/disciplinas/:id',
+    name: 'Disciplina',
+    props: true,
     component: () => import('../pages/disciplina/Disciplina.vue')
   },
   {

@@ -67,16 +67,17 @@ export default {
       }
     }
   },
-  created () {
+  mounted: async function () {
   },
   methods: {
     async checkLogin (user, password) {
       try {
         const response = await axios.get(`http://localhost:4000/login/check/${user}`)
-        const checkedPsw = response.data[0].user_password
-        console.log(checkedPsw)
+        const data = response.data
+        const checkedPsw = data[0].user_password
+        const userId = data[0].user_id
         if (checkedPsw === password) {
-          this.$router.push('/guia')
+          await this.$router.push({ name: 'Guia', params: { id: userId } })
         } else {
           this.$q.notify({
             color: 'negative',
