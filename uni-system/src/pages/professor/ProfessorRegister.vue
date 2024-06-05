@@ -126,7 +126,7 @@ export default {
     closeDialog: function () {
       this.$emit('close-dialog')
     },
-    saveRegisterStudent: function () {
+    saveRegisterProfessor: function () {
       this.$emit('save-professor')
     }
   }

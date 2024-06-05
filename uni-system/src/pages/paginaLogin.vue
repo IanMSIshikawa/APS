@@ -6,7 +6,6 @@
     <div class="q-pa-md centered" style="max-width: 400px">
       <q-form
         @submit="onSubmit"
-        @reset="onReset"
         class="q-gutter-md"
       >
         <q-input
@@ -35,9 +34,13 @@
 
         <div>
           <q-btn label="Entrar" type="submit" color="primary" @click = "checkLogin(user, password)"/>
-          <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
+          <q-btn label="Cadastrar" @click = "openRegisterDialog" color="primary" flat class="q-ml-sm" />
         </div>
       </q-form>
+      <register
+            :_is-open="isRegisterOpen"
+            @close-dialog="closeRegisterDialog"
+      />
     </div>
     </q-page>
     </q-page-container>
@@ -60,11 +63,15 @@ export default {
 
       onSubmit () {
 
-      },
-      onReset () {
-        user.value = null
-        password.value = null
       }
+    }
+  },
+  components: {
+    Register: () => import('./register.vue')
+  },
+  data: function () {
+    return {
+      isRegisterOpen: false
     }
   },
   created () {
@@ -88,6 +95,12 @@ export default {
       } catch (error) {
         console.error('Erro ao checkar login:', error)
       }
+    },
+    openRegisterDialog: function () {
+      this.isRegisterOpen = true
+    },
+    closeRegisterDialog: function () {
+      this.isRegisterOpen = false
     }
   }
 }
