@@ -122,6 +122,12 @@ export default {
     async addItem () {
       try {
         await axios.post('http://localhost:4000/insert/user', { user_name: this.name, user_password: this.password })
+        this.$q.notify({
+          color: 'positive',
+          position: 'top',
+          message: 'Cadastro realizado com sucesso!'
+        })
+        this.closeDialog()
       } catch (error) {
         console.error('Erro ao adicionar item:', error)
       }
