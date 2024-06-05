@@ -19,7 +19,7 @@ const TableColumns = [
     name: TableColumnsName.NAME,
     label: 'Nome',
     align: 'left',
-    field: 'name',
+    field: 'professor_name',
     style: 'width 60px'
   },
   {
@@ -27,7 +27,7 @@ const TableColumns = [
     name: TableColumnsName.EMAIL,
     label: 'Email',
     align: 'left',
-    field: 'email',
+    field: 'professor_email',
     style: 'width 60px'
   },
   {
@@ -35,7 +35,7 @@ const TableColumns = [
     name: TableColumnsName.DEPARTMENT,
     label: 'Departamento',
     align: 'left',
-    field: 'department',
+    field: 'dept_name',
     style: 'width 60px'
   }
 ]
@@ -46,17 +46,8 @@ function getDefaultStudentFields () {
   }
 }
 
-const dummyProfessor = [
-  {
-    name: 'Laudelino',
-    email: 'bastos@utfpr.edu.br',
-    department: 'DAINF'
-  }
-]
-
 export {
   TableColumns,
   TableColumnsName,
-  getDefaultStudentFields,
-  dummyProfessor
+  getDefaultStudentFields
 }
