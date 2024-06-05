@@ -85,7 +85,7 @@
                   size="lg"
                   no-caps
                   class="save-button"
-                  @click="saveRegisterProfessor"
+                  @click="addProfessor(id)"
                 >
                 </q-btn>
               </q-card-actions>
@@ -99,11 +99,17 @@
 
 <script>
 
+import axios from 'axios'
+
 export default {
   props: {
     _isOpen: {
       type: Boolean,
       require: true
+    },
+    id: {
+      type: [Number, String],
+      required: true
     }
   },
   watch: {
@@ -128,6 +134,13 @@ export default {
     },
     saveRegisterProfessor: function () {
       this.$emit('save-professor')
+    },
+    async addProfessor (UserId) {
+      try {
+        await axios.post('http://localhost:4000/insert/professor/', { user_id: UserId, professor_name: this.professorName, professor_email: this.professorEmail, dept_name: this.professorDepartment })
+      } catch (error) {
+        console.error('Erro ao adicionar item:', error.response ? error.response.data : error.message)
+      }
     }
   }
 }

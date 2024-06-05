@@ -84,6 +84,7 @@ export default {
         const data = response.data
         const checkedPsw = data[0].user_password
         const userId = data[0].user_id
+        console.log(checkedPsw)
         if (checkedPsw === password) {
           await this.$router.push({ name: 'Guia', params: { id: userId } })
         } else {

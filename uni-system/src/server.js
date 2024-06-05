@@ -29,18 +29,6 @@ db.connect(err => {
   console.log('Conectado ao banco de dados.');
 });
 
-// Rota para buscar informações
-app.get('/login/check/:user', (req, res) => {
-  const user = req.params.user
-  const sql = 'select * from users where user_name = ?';
-  db.query(sql, [user], (err, results) => {
-    if (err) {
-      return res.status(500).send('Erro ao obter usuario e senha.');
-    }
-    console.log(`Busquei no banco de dados ${results}`)
-    res.send(results);
-  });
-});
 
 
 // Rota para inserir informações
@@ -52,6 +40,31 @@ app.post('/insert/user', (req, res) => {
       return res.status(500).send('Erro ao inserir dados.');
     }
     res.status(201).send('Item inserido com sucesso.');
+  });
+});
+
+app.post('/insert/professor/', (req, res) => {
+  const {user_id, professor_name, professor_email, dept_name} = req.body;
+  console.log(user_id, professor_name, professor_email, dept_name);
+  const sql = 'INSERT INTO professor (user_id, professor_name, professor_email, dept_name, deleted) values (?, ?, ?, ?, ?)';
+  db.query(sql, [user_id, professor_name, professor_email, dept_name, 0], (err, result) => {
+    if (err) {
+      return res.status(500).send('Erro ao inserir dados.');
+    }
+    res.status(201).send('Item inserido com sucesso.');
+  });
+});
+
+// Rota para buscar informações
+app.get('/login/check/:user', (req, res) => {
+  const user = req.params.user
+  const sql = 'select * from users where user_name = ?';
+  db.query(sql, [user], (err, results) => {
+    if (err) {
+      return res.status(500).send('Erro ao obter usuario e senha.');
+    }
+    console.log(`Busquei no banco de dados ${results}`)
+    res.send(results);
   });
 });
 

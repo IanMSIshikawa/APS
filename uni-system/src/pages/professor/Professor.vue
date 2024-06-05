@@ -17,6 +17,7 @@
             :_is-open="isRegisterProfessorOpen"
             @close-dialog="closeRegisterDialog"
             @save-professor="saveAndReloadRegisterProfessor"
+            @id="id"
           />
           <div
             v-if="professors.length"
