@@ -3,8 +3,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mysql = require('mysql');
 //alterar em cada maquina 
-const psw = 'Chucrute2280';
-const database = 'unisystem'
+const psw = 'Db_12345678';
+const database = 'UniSystem'
 
 const app = express();
 const port = 4000;//pode ser necessario alterar
@@ -52,6 +52,9 @@ app.post('/insert/user', (req, res) => {
       return res.status(500).send('Erro ao inserir dados.');
     }
     res.status(201).send('Item inserido com sucesso.');
+  });
+});
+
 app.get('/get/professor/:userId', (req, res) => {
   const user_id = req.params.userId
   const sql = 'select * from professor where user_id = ?';

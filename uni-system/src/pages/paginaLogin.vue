@@ -76,8 +76,6 @@ export default {
     }
   },
   created () {
-  
-  mounted: async function () {
   },
   methods: {
     async checkLogin (user, password) {

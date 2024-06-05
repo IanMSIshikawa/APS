@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import { dummyStudent } from './studentConfig'
+// import { dummyStudent } from './studentConfig'
 import { dummyTest } from './detailsConfig'
 
 export default {
@@ -83,7 +83,7 @@ export default {
       isRegisterTestOpen: false,
       isEditTest: false,
       name: null,
-      currentStudent: dummyStudent,
+      currentStudent: null,
       currentTest: dummyTest[0],
       testId: null,
       tests: dummyTest
