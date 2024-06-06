@@ -20,8 +20,9 @@
               class="row justify-center align-center q-mb-lg"
             >
               <q-select
-                v-model="test.take"
+                v-model="courseName"
                 :options="options"
+                option-label="name"
                 label="Disciplina"
                 required
                 outlined
@@ -37,7 +38,7 @@
               class="row justify-center align-center q-mb-lg"
             >
               <q-input
-                v-model="test.name"
+                v-model="testName"
                 :label="'Nome da prova'"
                 type="text"
                 required
@@ -54,7 +55,7 @@
               class="row justify-center align-center q-mb-lg"
             >
               <q-input
-                v-model="test.grade"
+                v-model="testGrade"
                 label="Nota da prova"
                 type="number"
                 required
@@ -98,7 +99,7 @@
 </template>
 
 <script>
-import { getDefaultTestFields } from './detailsConfig'
+import axios from 'axios'
 
 export default {
   props: {
@@ -109,6 +110,10 @@ export default {
     _currentTest: {
       type: Object,
       require: true
+    },
+    _userId: {
+      type: [Number, String],
+      required: true
     }
   },
   watch: {
@@ -122,9 +127,15 @@ export default {
   data: function () {
     return {
       isOpen: false,
-      test: getDefaultTestFields(),
-      options: ['Análise e Projeto de Sistemas']
+      testName: '',
+      testGrade: '',
+      courseName: '',
+      options: []
     }
+  },
+  mounted: async function () {
+    await this.getCoursesNames()
+    console.debug(this.options, 'Cursos')
   },
   methods: {
     closeDialog: function () {
@@ -132,6 +143,24 @@ export default {
     },
     saveRegisterTest: async function () {
       this.$emit('save-reload-register')
+    },
+    getCoursesNames: async function (id) {
+      try {
+        const response = await axios.get(`http://localhost:4000/get/disciplina/${this._userId}`)
+        const data = response.data
+        if (data != null) {
+          this.options = data.map(disciplina => ({ name: disciplina.course_name, id: disciplina.course_id }))
+        } else {
+          this.$q.notify({
+            color: 'negative',
+            position: 'top',
+            message: 'Condição não atendida!',
+            icon: 'warning'
+          })
+        }
+      } catch (error) {
+        console.error('Erro ao checkar login:', error)
+      }
     }
   }
 }

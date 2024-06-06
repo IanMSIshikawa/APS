@@ -180,7 +180,7 @@ export default {
     },
     getProfessorsNames: async function (id) {
       try {
-        const response = await axios.get(`http://localhost:4000/get/professor/${id}`)
+        const response = await axios.get(`http://localhost:4000/get/professores/${id}`)
         const data = response.data
         if (data != null) {
           this.options = data.map(professor => ({ name: professor.professor_name, id: professor.professor_id }))

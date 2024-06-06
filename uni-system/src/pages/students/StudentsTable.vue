@@ -106,7 +106,7 @@ export default {
   },
   methods: {
     viewStudent: async function (studentId) {
-      await this.$router.push({ name: 'EstudanteID', params: { userId: this.id, id: studentId } })
+      await this.$router.push({ name: 'EstudanteID', params: { user_id: this.id, id: studentId } })
     }
   }
 }

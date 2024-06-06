@@ -28,7 +28,7 @@ const routes = [
     component: () => import('../pages/disciplina/Disciplina.vue')
   },
   {
-    path: '/estudanteId/:userId/:id',
+    path: '/estudanteId/:user_id/:id',
     name: 'EstudanteID',
     props: true,
     component: () => import('../pages/students/StudentDetails.vue')

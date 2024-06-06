@@ -81,12 +81,17 @@
 </template>
 
 <script>
+import axios from 'axios'
 
 export default {
   props: {
     _isOpen: {
       type: Boolean,
       require: true
+    },
+    id: {
+      type: [Number, String],
+      required: true
     }
   },
   watch: {
@@ -108,8 +113,23 @@ export default {
     closeDialog: function () {
       this.$emit('close-dialog')
     },
-    saveRegisterStudent: function () {
+    saveRegisterStudent: async function () {
+      await this.addStudent(this.id)
+      this.studentEmail = ''
+      this.studentName = ''
       this.$emit('save-student')
+    },
+    addStudent: async function (UserId) {
+      try {
+        await axios.post('http://localhost:4000/insert/estudante/', { user_id: UserId, student_name: this.studentName, student_email: this.studentEmail })
+        this.$q.notify({
+          color: 'positive',
+          position: 'top',
+          message: 'Cadastro realizado com sucesso!'
+        })
+      } catch (error) {
+        console.error('Erro ao cadastrar aluno:', error.response ? error.response.data : error.message)
+      }
     }
   }
 }

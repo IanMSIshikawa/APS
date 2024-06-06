@@ -17,6 +17,7 @@
                 color="primary"
                 no-caps
                 class="save-button"
+                @click="saveStudent"
               >
               </q-btn>
             </div>
@@ -24,6 +25,7 @@
           <teste-register
               :_is-open="isRegisterTestOpen"
               :_currentTest="currentTest"
+              :_userId="user_id"
               @close-dialog="closeRegisterDialog"
               @save-reload-register="saveAndReloadRegisterTest"
           />
@@ -34,7 +36,7 @@
             />
             <div class="row justify-left align-center q-mb-lg q-mx-xl">
               <q-input
-                v-model="currentStudent[0].name"
+                v-model="currentStudentName"
                 label="Nome"
                 type="text"
                 required
@@ -45,7 +47,6 @@
             </div>
           </div>
           <div
-            v-if="tests.length"
             class="col-auto q-mx-xl"
           >
             <details-table
@@ -62,8 +63,7 @@
 </template>
 
 <script>
-// import { dummyStudent } from './studentConfig'
-import { dummyTest } from './detailsConfig'
+import axios from 'axios'
 
 export default {
   components: {
@@ -84,16 +84,24 @@ export default {
     return {
       isRegisterTestOpen: false,
       isEditTest: false,
-      name: null,
-      currentStudent: null,
-      currentTest: dummyTest[0],
+      currentStudentName: '',
+      currentTest: {},
+      takes: [],
       testId: null,
-      tests: dummyTest
+      tests: []
     }
   },
+  mounted: async function () {
+    await this.getCurrentStudent()
+    await this.getTakes()
+    await this.getTests()
+    console.debug(this.tests, 'TESTS')
+  },
   methods: {
-    goBackToStudents: async function () {
-      await this.$router.push({ name: this.$RouteNames.STUDENTS.LIST.NAME })
+    saveStudent: async function () {
+      await this.updateCurrentStudent()
+      await this.getCurrentStudent()
+      await this.$router.push({ name: 'Estudante', params: { id: this.user_id } })
     },
     openRegisterTestDialog: function () {
       this.isRegisterTestOpen = true
@@ -110,6 +118,71 @@ export default {
     openEditTestDialog: async function (event) {
       this.testId = event
       this.isEditTest = true
+    },
+    getCurrentStudent: async function () {
+      try {
+        const response = await axios.get(`http://localhost:4000/get/estudante/${this.user_id}/${this.id}`)
+        const data = response.data
+        if (data != null) {
+          this.currentStudentName = data[0].student_name
+        } else {
+          this.$q.notify({
+            color: 'negative',
+            position: 'top',
+            message: 'Condição não atendida!',
+            icon: 'warning'
+          })
+        }
+      } catch (error) {
+        console.error('Erro ao checkar login:', error)
+      }
+    },
+    updateCurrentStudent: async function () {
+      try {
+        await axios.put(`http://localhost:4000/update/estudante/${this.user_id}`, {
+          student_id: this.id,
+          student_name: this.currentStudentName
+        })
+      } catch (error) {
+        console.error('Erro ao atualizar o aluno:', error)
+      }
+    },
+    getTakes: async function () {
+      try {
+        const response = await axios.get(`http://localhost:4000/get/takesByStudent/${this.id}`)
+        const data = response.data
+        if (data != null) {
+          this.takes = data.map(take => take.take_id)
+        } else {
+          this.$q.notify({
+            color: 'negative',
+            position: 'top',
+            message: 'Condição não atendida!',
+            icon: 'warning'
+          })
+        }
+      } catch (error) {
+        console.error('Erro ao checkar login:', error)
+      }
+    },
+    getTests: async function () {
+      try {
+        console.debug(this.takes, 'TAKES')
+        const response = await axios.get(`http://localhost:4000/get/tests/${this.takes}`)
+        const data = response.data
+        if (data != null) {
+          this.tests = data
+        } else {
+          this.$q.notify({
+            color: 'negative',
+            position: 'top',
+            message: 'Condição não atendida!',
+            icon: 'warning'
+          })
+        }
+      } catch (error) {
+        console.error('Erro ao checkar login:', error)
+      }
     }
   }
 }

@@ -15,6 +15,7 @@
           </div>
           <student-register
             :_is-open="isRegisterStudentOpen"
+            :id="id"
             @close-dialog="closeRegisterDialog"
             @save-student="saveAndReloadRegisterStudent"
           />
@@ -73,12 +74,13 @@ export default {
     closeRegisterDialog: function () {
       this.isRegisterStudentOpen = false
     },
-    saveAndReloadRegisterStudent: function () {
+    saveAndReloadRegisterStudent: async function () {
       this.isRegisterStudentOpen = false
+      await this.getStudents(this.id)
     },
     getStudents: async function (id) {
       try {
-        const response = await axios.get(`http://localhost:4000/get/estudante/${id}`)
+        const response = await axios.get(`http://localhost:4000/get/estudantes/${id}`)
         const data = response.data
         if (data != null) {
           this.students = data

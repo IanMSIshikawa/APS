@@ -19,7 +19,7 @@ const TableColumns = [
     name: TableColumnsName.TAKE,
     label: 'Disciplina',
     align: 'left',
-    field: 'take',
+    field: 'course_name',
     style: 'min-width: 450px'
   },
   {
@@ -27,7 +27,7 @@ const TableColumns = [
     name: TableColumnsName.TEST,
     label: 'Prova',
     align: 'left',
-    field: 'name',
+    field: 'test_name',
     style: 'min-width: 400px'
   },
   {
@@ -49,18 +49,8 @@ function getDefaultTestFields () {
   }
 }
 
-const dummyTest = [
-  {
-    take: 'Análise e Projeto de Sistemas',
-    name: 'Prova 1',
-    grade: 9.5,
-    test_id: 1
-  }
-]
-
 export {
   TableColumns,
   TableColumnsName,
-  getDefaultTestFields,
-  dummyTest
+  getDefaultTestFields
 }

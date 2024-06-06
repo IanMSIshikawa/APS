@@ -3,8 +3,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mysql = require('mysql');
 //alterar em cada maquina 
-const psw = 'Db_12345678';
-const database = 'UniSystem'
+const psw = 'Chucrute2280';
+const database = 'unisystem'
 
 const app = express();
 const port = 4000;//pode ser necessario alterar
@@ -57,6 +57,17 @@ app.post('/insert/professor/', (req, res) => {
   });
 });
 
+app.post('/insert/estudante/', (req, res) => {
+  const {user_id, student_name, student_email} = req.body;
+  const sql = 'INSERT INTO students (user_id, student_name, student_email) values (?, ?, ?)';
+  db.query(sql, [user_id, student_name, student_email], (err, result) => {
+    if (err) {
+      return res.status(500).send('Erro ao inserir dados.');
+    }
+    res.status(201).send('Item inserido com sucesso.');
+  });
+});
+
 app.post('/insert/disciplina/', (req, res) => {
   const {user_id, course_name, professor_id, class_room, class_time, class_weekday} = req.body;
   const sql = 'INSERT INTO courses (user_id, course_name, professor_id, class_room, class_time, class_weekday) values (?, ?, ?, ?, ?, ?)'
@@ -81,7 +92,7 @@ app.get('/login/check/:user', (req, res) => {
   });
 });
 
-app.get('/get/professor/:user', (req, res) => {
+app.get('/get/professores/:user', (req, res) => {
   const user_id = req.params.user;
   const sql = 'select * from professor where user_id = ?';
   db.query(sql, [user_id], (err, results) => {
@@ -93,12 +104,25 @@ app.get('/get/professor/:user', (req, res) => {
   });
 });
 
-app.get('/get/estudante/:userId', (req, res) => {
+app.get('/get/estudantes/:userId', (req, res) => {
   const user_id = req.params.userId
   const sql = 'select * from students where user_id = ?';
   db.query(sql, [user_id], (err, results) => {
     if (err) {
       return res.status(500).send('Erro ao obter estudantes');
+    }
+    console.log(`Busquei no banco de dados ${results}`)
+    res.send(results);
+  });
+});
+
+app.get('/get/estudante/:userId/:studentId', (req, res) => {
+  const user_id = req.params.userId
+  const student_id = req.params.studentId
+  const sql = 'select student_name from students where user_id = ? and student_id = ?';
+  db.query(sql, [user_id, student_id], (err, results) => {
+    if (err) {
+      return res.status(500).send('Erro ao obter estudante');
     }
     console.log(`Busquei no banco de dados ${results}`)
     res.send(results);
@@ -117,6 +141,31 @@ app.get('/get/disciplina/:userId', (req, res) => {
   });
 });
 
+app.get('/get/takesByStudent/:studentId', (req, res) => {
+  const student_id = req.params.studentId
+  const sql = 'select take_id from takes where student_id = ?';
+  db.query(sql, [student_id], (err, results) => {
+    if (err) {
+      return res.status(500).send('Erro ao obter cursos');
+    }
+    console.log(`Busquei no banco de dados ${results}`)
+    res.send(results);
+  });
+})
+
+app.get('/get/tests/:takeId', (req, res) => {
+  let take_id_str = req.params.takeId
+  const take_id = take_id_str.split(',').map(id => parseInt(id, 10));
+  const placeholders = take_id.map(() => '?').join(',')
+  const sql = `select tst.take_id, test_id, course_name, grade, test_name from tests tst join takes tks join courses crs where tst.take_id in (${placeholders}) and tst.take_id = tks.take_id and crs.course_id = tks.course_id`;
+  db.query(sql, take_id, (err, results) => {
+    if (err) {
+      return res.status(500).send('Erro ao obter provas');
+    }
+    console.log(`Busquei no banco de dados ${results}`)
+    res.send(results);
+  });
+});
 
 app.get('/get/professorCourse/:userId/:professorId', (req, res) => {
   const user_id = req.params.userId
@@ -128,6 +177,20 @@ app.get('/get/professorCourse/:userId/:professorId', (req, res) => {
     }
     console.log(`Busquei no banco de dados ${results}`)
     res.send(results);
+  });
+});
+
+//Rotas para fazer update
+app.put('/update/estudante/:userId', (req, res) => {
+  const user_id = req.params.userId;
+  const { student_id, student_name } = req.body;
+  const sql = 'UPDATE students SET student_name = ? WHERE user_id = ? and student_id = ?';
+
+  db.query(sql, [student_name, user_id, student_id], (err, result) => {
+    if (err) {
+      return res.status(500).send('Erro ao atualizar o aluno');
+    }
+    res.send('Aluno atualizado com sucesso');
   });
 });
 
