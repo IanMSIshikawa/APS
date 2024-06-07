@@ -22,7 +22,7 @@ const TableColumns = [
     name: TableColumnsName.NAME,
     label: 'Nome',
     align: 'left',
-    field: 'name',
+    field: 'student_name',
     style: 'width 60px'
   },
   {
@@ -30,7 +30,7 @@ const TableColumns = [
     name: TableColumnsName.EMAIL,
     label: 'Email',
     align: 'left',
-    field: 'email',
+    field: 'student_email',
     style: 'width 60px'
   },
   {
@@ -73,21 +73,8 @@ function getDefaultStudentFields () {
   }
 }
 
-const dummyStudent = [
-  {
-    name: 'Lucas',
-    email: 'lucas_lima.nog@hotmail.com',
-    tests_number: 9,
-    average: 8.5,
-    highest_grade: 9.5,
-    lowest_grade: 8.5,
-    student_id: 1
-  }
-]
-
 export {
   TableColumns,
   TableColumnsName,
-  getDefaultStudentFields,
-  dummyStudent
+  getDefaultStudentFields
 }
