@@ -43,7 +43,6 @@
 </template>
 
 <script>
-import { dummyProfessor } from './ProfessorConfig'
 
 export default {
   components: {
@@ -53,7 +52,8 @@ export default {
   data: function () {
     return {
       isRegisterProfessorOpen: false,
-      professors: dummyProfessor
+      isEditProfessorOpen: false,
+      professors: []
     }
   },
   methods: {

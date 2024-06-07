@@ -1,5 +1,11 @@
 <template>
   <div class="row justify-center full-width q-px-xl q-mx-lg q-mt-lg">
+    <professor-edit
+            :_is-open="isEditProfessorOpen"
+            :id="1"
+            @close-dialog="closeEditDialog"
+            @save-professor="saveAndReloadEditProfessor"
+    />
       <q-virtual-scroll
         :items="_professors"
         :virtual-scroll-item-size="48"
@@ -65,6 +71,7 @@
                   color="grey-9"
                   class="full-height cursor-pointer q-ml-xs"
                   size="30px"
+                  @click="openEditProfessorDialog()"
                 />
                 <q-icon
                   name="delete"
@@ -89,6 +96,9 @@
 import { TableColumnsName, TableColumns } from './ProfessorConfig'
 
 export default {
+  components: {
+    ProfessorEdit: () => import('./ProfessorEdit.vue')
+  },
   props: {
     _professors: {
       type: Array,
@@ -98,10 +108,21 @@ export default {
   data: function () {
     return {
       ColumnsName: TableColumnsName,
-      Columns: TableColumns
+      Columns: TableColumns,
+      isEditProfessorOpen: false
     }
   },
   methods: {
+    openEditProfessorDialog: function () {
+      this.isEditProfessorOpen = true
+    },
+    closeEditDialog: function () {
+      this.isEditProfessorOpen = false
+    },
+    saveAndReloadEditProfessor: async function () {
+      this.isEditProfessorOpen = false
+      this.$emit('save-professor')
+    },
     viewStudent: async function (id) {
       await this.$router.push({ name: this.$RouteNames.STUDENTS.STUDENT_EDIT.NAME, params: { id: id } })
     }
