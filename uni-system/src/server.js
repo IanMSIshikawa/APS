@@ -3,8 +3,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mysql = require('mysql');
 //alterar em cada maquina 
-const psw = 'Chucrute2280';
-const database = 'unisystem'
+const psw = 'Db_12345678';
+const database = 'UniSystem'
 
 const app = express();
 const port = 4000;//pode ser necessario alterar
@@ -240,6 +240,19 @@ app.put('/update/estudante/:userId', (req, res) => {
     res.send('Aluno atualizado com sucesso');
   });
 });
+app.put('/update/professor/:professorId', (req, res) => {
+  const professor_id = req.params.professorId
+  const {  professor_name, professor_email, dept_name } = req.body;
+  const sql = 'UPDATE professor SET professor_name = ?, professor_email = ?, dept_name = ? WHERE professor_id = ?';
+
+  db.query(sql, [professor_name, professor_email, dept_name, professor_id], (err, result) => {
+    if (err) {
+      return res.status(500).send('Erro ao atualizar o professor');
+    }
+    res.send('Aluno atualizado com sucesso');
+  });
+});
+
 
 app.put('/update/tests/:testId', (req, res) => {
   const test_id = req.params.testId;

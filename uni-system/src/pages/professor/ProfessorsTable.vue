@@ -65,6 +65,7 @@
                   color="grey-9"
                   class="full-height cursor-pointer q-ml-xs"
                   size="30px"
+                  @click="editProfessor(item.professor_id)"
                 />
                 <q-icon
                   name="delete"
@@ -126,6 +127,10 @@ export default {
           message: `Não foi possível deletar o professor de id:${id}`
         })
       }
+    },
+    editProfessor: function (professorID) {
+      console.debug(professorID, 'CCCCCCCCCCCC')
+      this.$emit('edit-professor', professorID)
     }
   }
 }

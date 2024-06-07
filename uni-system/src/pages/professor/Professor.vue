@@ -14,8 +14,10 @@
             />
           </div>
           <professor-register
-            :_is-open="isRegisterProfessorOpen"
+            :_is-open="isRegisterProfessorOpen || isEditProfessor"
             :id="id"
+            :isEdit="isEditProfessor"
+            :professorID="professorId"
             @close-dialog="closeRegisterDialog"
             @save-professor="saveAndReloadRegisterProfessor"
           />
@@ -25,7 +27,9 @@
           >
             <professors-table
               :_professors="professors"
+              :isEdit="isEditProfessor"
               @save-professor="saveAndReloadRegisterProfessor"
+              @edit-professor="openEditProfessorDialog($event)"
             />
           </div>
           <q-card
@@ -60,7 +64,9 @@ export default {
   },
   data: function () {
     return {
+      isEditProfessor: false,
       isRegisterProfessorOpen: false,
+      professorId: null,
       professors: []
     }
   },
@@ -68,11 +74,16 @@ export default {
     await this.getProfessors(this.id)
   },
   methods: {
+    openEditProfessorDialog: async function (event) {
+      this.professorId = event
+      this.isEditProfessor = true
+    },
     openRegisterProfessorDialog: function () {
       this.isRegisterProfessorOpen = true
     },
     closeRegisterDialog: function () {
       this.isRegisterProfessorOpen = false
+      this.isEditProfessor = false
     },
     saveAndReloadRegisterProfessor: async function () {
       this.isRegisterProfessorOpen = false

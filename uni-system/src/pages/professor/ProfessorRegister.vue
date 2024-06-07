@@ -110,6 +110,14 @@ export default {
     id: {
       type: [Number, String],
       required: true
+    },
+    isEdit: {
+      type: Boolean,
+      required: true
+    },
+    professorID: {
+      type: [Number, String],
+      required: true
     }
   },
   watch: {
@@ -128,12 +136,20 @@ export default {
       isOpen: false
     }
   },
+  mounted: function () {
+    console.debug(this.professorID, 'BBBBBBBB')
+  },
   methods: {
     closeDialog: function () {
       this.$emit('close-dialog')
     },
     saveRegisterProfessor: async function (id) {
-      await this.addProfessor(id)
+      if (!this.isEdit) {
+        await this.addProfessor(id)
+      } else {
+        console.debug(this.professorID, 'AAAAAAAAAAAA')
+        await this.editProfessor(this.professorID)
+      }
       this.professorName = ''
       this.professorEmail = ''
       this.professorDepartment = ''
@@ -149,6 +165,18 @@ export default {
         })
       } catch (error) {
         console.error('Erro ao cadastrar professor:', error.response ? error.response.data : error.message)
+      }
+    },
+    async editProfessor (professorId) {
+      try {
+        await axios.put(`http://localhost:4000/update/professor/${professorId}`, { professor_name: this.professorName, professor_email: this.professorEmail, dept_name: this.professorDepartment })
+        this.$q.notify({
+          color: 'positive',
+          position: 'top',
+          message: 'Editado com sucesso!'
+        })
+      } catch (error) {
+        console.error('Erro ao editar professor:', error.response ? error.response.data : error.message)
       }
     }
   }
