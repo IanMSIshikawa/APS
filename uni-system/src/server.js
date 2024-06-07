@@ -202,6 +202,18 @@ app.get('/get/tests/:takeId', (req, res) => {
   });
 });
 
+app.get('/get/courseByTake/:takeId', (req, res) => {
+  let take_id = req.params.takeId
+  const sql = `select crs.course_name, crs.course_id from courses crs where course_id in (select course_id from takes tks where tks.take_id = take_id) `
+  db.query(sql, take_id, (err, results) => {
+    if (err) {
+      return res.status(500).send('Erro ao obter curso');
+    }
+    console.log(`Busquei no banco de dados ${results}`)
+    res.send(results);
+  });
+});
+
 app.get('/get/professorCourse/:userId/:professorId', (req, res) => {
   const user_id = req.params.userId
   const professor_id = req.params.professorId
@@ -224,6 +236,19 @@ app.put('/update/estudante/:userId', (req, res) => {
   db.query(sql, [student_name, user_id, student_id], (err, result) => {
     if (err) {
       return res.status(500).send('Erro ao atualizar o aluno');
+    }
+    res.send('Aluno atualizado com sucesso');
+  });
+});
+
+app.put('/update/tests/:testId', (req, res) => {
+  const test_id = req.params.testId;
+  const { take_id, test_name, grade } = req.body;
+  const sql = 'UPDATE tests SET take_id = ?, test_name = ?, grade = ? WHERE test_id = ?';
+
+  db.query(sql, [take_id, test_name, grade, test_id], (err, result) => {
+    if (err) {
+      return res.status(500).send('Erro ao atualizar a prova');
     }
     res.send('Aluno atualizado com sucesso');
   });

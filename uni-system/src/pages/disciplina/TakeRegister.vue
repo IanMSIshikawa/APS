@@ -172,10 +172,20 @@ export default {
   },
   methods: {
     closeDialog: function () {
+      this.takeName = ''
+      this.takeRoom = ''
+      this.takeDay = ''
+      this.takeTime = ''
+      this.takeProfessor = ''
       this.$emit('close-dialog')
     },
     saveRegisterTake: async function () {
-      await this.addTake(this._id)
+      await this.addCourse(this._id)
+      this.takeName = ''
+      this.takeRoom = ''
+      this.takeDay = ''
+      this.takeTime = ''
+      this.takeProfessor = ''
       this.$emit('save-take')
     },
     getProfessorsNames: async function (id) {
@@ -196,7 +206,7 @@ export default {
         console.error('Erro ao checkar login:', error)
       }
     },
-    addTake: async function (UserId) {
+    addCourse: async function (UserId) {
       try {
         await axios.post('http://localhost:4000/insert/disciplina/', { user_id: UserId, course_name: this.takeName, professor_id: this.takeProfessor.id, class_room: this.takeRoom, class_time: this.takeTime, class_weekday: this.takeDay })
         this.$q.notify({

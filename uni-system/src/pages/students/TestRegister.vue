@@ -137,27 +137,41 @@ export default {
       isOpen: false,
       testName: '',
       testGrade: '',
-      courseName: '',
+      courseName: { name: null, id: null },
+      updated: true,
       options: []
     }
   },
   mounted: async function () {
     await this.getCoursesNames()
   },
-  updated: function () {
+  updated: async function () {
     console.debug(this._currentTest, 'AAAAAAAA')
-    if (this._currentTest) {
+    if (this._currentTest && this.updated) {
       this.testName = this._currentTest.test_name
       this.testGrade = this._currentTest.grade
+      const tmpCourseName = await this.getCourseByTake()
+      this.courseName.id = tmpCourseName.course_id
+      this.courseName.name = tmpCourseName.course_name
+      this.updated = false
     }
+    console.debug(this.courseName, 'COURSE NAME')
   },
   methods: {
     closeDialog: function () {
+      this.updated = true
+      this.testName = ''
+      this.testGrade = ''
+      this.courseName = { name: null, id: null }
       this.$emit('close-dialog')
     },
     saveRegisterTest: async function () {
-      await this.addTake()
-      await this.addTest()
+      if (!this._currentTest) {
+        await this.addTake()
+        await this.addTest()
+      } else {
+        await this.updateCurrentTest()
+      }
       this.$emit('save-reload-register')
     },
     getCoursesNames: async function () {
@@ -218,6 +232,36 @@ export default {
         }
       } catch (error) {
         console.error('Erro ao checkar login:', error)
+      }
+    },
+    getCourseByTake: async function () {
+      try {
+        const response = await axios.get(`http://localhost:4000/get/courseByTake/${this._currentTest.take_id}`)
+        const data = response.data
+        if (data != null) {
+          return data[0]
+        } else {
+          this.$q.notify({
+            color: 'negative',
+            position: 'top',
+            message: 'Condição não atendida!',
+            icon: 'warning'
+          })
+        }
+      } catch (error) {
+        console.error('Erro ao checkar login:', error)
+      }
+    },
+    updateCurrentTest: async function () {
+      try {
+        await axios.put(`http://localhost:4000/update/tests/${this._currentTest.test_id}`, {
+          take_id: this._currentTest.take_id,
+          test_name: this.testName,
+          grade: this.testGrade,
+          test_id: this._currentTest.test_id
+        })
+      } catch (error) {
+        console.error('Erro ao atualizar a prova:', error)
       }
     }
   }

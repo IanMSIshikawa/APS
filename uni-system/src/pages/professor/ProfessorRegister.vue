@@ -134,6 +134,9 @@ export default {
     },
     saveRegisterProfessor: async function (id) {
       await this.addProfessor(id)
+      this.professorName = ''
+      this.professorEmail = ''
+      this.professorDepartment = ''
       this.$emit('save-professor')
     },
     async addProfessor (UserId) {

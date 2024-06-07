@@ -129,8 +129,8 @@ export default {
     openDialog: function () {
       this.$emit('open-dialog')
     },
-    editTest: function (testId) {
-      this.$emit('edit-test', testId)
+    editTest: function (test) {
+      this.$emit('edit-test', test)
     },
     deleteTest: function (testId) {
       this.$emit('delete-test', testId)
