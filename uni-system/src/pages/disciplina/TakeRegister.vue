@@ -145,6 +145,14 @@ export default {
     _id: {
       type: [Number, String],
       required: true
+    },
+    isEdit: {
+      type: Boolean,
+      required: true
+    },
+    disciplinaID: {
+      type: [Number, String],
+      required: true
     }
   },
   watch: {
@@ -180,7 +188,11 @@ export default {
       this.$emit('close-dialog')
     },
     saveRegisterTake: async function () {
-      await this.addCourse(this._id)
+      if (!this.isEdit) {
+        await this.addCourse(this._id)
+      } else {
+        await this.editDisciplina(this.disciplinaID)
+      }
       this.takeName = ''
       this.takeRoom = ''
       this.takeDay = ''
@@ -216,6 +228,18 @@ export default {
         })
       } catch (error) {
         console.error('Erro ao cadastrar disciplina:', error.response ? error.response.data : error.message)
+      }
+    },
+    editDisciplina: async function (disciplinaID) {
+      try {
+        await axios.put(`http://localhost:4000/update/disciplina/${disciplinaID}`, { course_name: this.takeName, class_room: this.takeRoom, class_time: this.takeTime, class_weekday: this.takeDay, professor_id: this.takeProfessor.id })
+        this.$q.notify({
+          color: 'positive',
+          position: 'top',
+          message: 'Editado com sucesso!'
+        })
+      } catch (error) {
+        console.error('Erro ao editar disciplina:', error.response ? error.response.data : error.message)
       }
     }
   }

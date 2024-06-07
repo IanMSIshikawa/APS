@@ -129,7 +129,6 @@ export default {
       }
     },
     editProfessor: function (professorID) {
-      console.debug(professorID, 'CCCCCCCCCCCC')
       this.$emit('edit-professor', professorID)
     }
   }

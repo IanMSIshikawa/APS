@@ -137,7 +137,7 @@ export default {
     }
   },
   mounted: function () {
-    console.debug(this.professorID, 'BBBBBBBB')
+
   },
   methods: {
     closeDialog: function () {
@@ -147,7 +147,6 @@ export default {
       if (!this.isEdit) {
         await this.addProfessor(id)
       } else {
-        console.debug(this.professorID, 'AAAAAAAAAAAA')
         await this.editProfessor(this.professorID)
       }
       this.professorName = ''

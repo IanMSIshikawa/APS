@@ -65,6 +65,7 @@
                   color="grey-9"
                   class="full-height cursor-pointer q-ml-xs"
                   size="30px"
+                  @click="editDisciplina(item.course_id)"
                 />
                 <q-icon
                   name="delete"
@@ -102,7 +103,10 @@ export default {
     }
   },
   methods: {
-
+    editDisciplina: function (disciplinaID) {
+      console.debug(disciplinaID, 'EEEEE')
+      this.$emit('edit-disciplina', disciplinaID)
+    }
   }
 }
 </script>

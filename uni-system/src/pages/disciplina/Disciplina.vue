@@ -14,8 +14,10 @@
             />
           </div>
           <take-register
-            :_is-open="isRegisterDisciplinaOpen"
+            :_is-open="isRegisterDisciplinaOpen || isEditDisciplina"
+            :isEdit="isEditDisciplina"
             :_id="id"
+            :disciplinaID="disciplinaId"
             @close-dialog="closeRegisterDialog"
             @save-take="saveAndReloadRegisterDisciplina"
           />
@@ -25,6 +27,8 @@
           >
             <takes-table
               :_takes="takes"
+              @edit-disciplina="openEditDisciplinaDialog($event)"
+              :isEdit="isEditDisciplina"
             />
           </div>
           <q-card
@@ -60,6 +64,8 @@ export default {
   data: function () {
     return {
       isRegisterDisciplinaOpen: false,
+      isEditDisciplina: false,
+      disciplinaId: null,
       takes: []
     }
   },
@@ -67,11 +73,17 @@ export default {
     await this.getCourses(this.id)
   },
   methods: {
+    openEditDisciplinaDialog: async function (event) {
+      this.disciplinaId = event
+      console.debug(event, 'AAAA')
+      this.isEditDisciplina = true
+    },
     openRegisterDisciplinaDialog: function () {
       this.isRegisterDisciplinaOpen = true
     },
     closeRegisterDialog: function () {
       this.isRegisterDisciplinaOpen = false
+      this.isEditDisciplina = false
     },
     saveAndReloadRegisterDisciplina: async function () {
       this.isRegisterDisciplinaOpen = false

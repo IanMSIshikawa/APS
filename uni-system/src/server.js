@@ -252,6 +252,19 @@ app.put('/update/professor/:professorId', (req, res) => {
     res.send('Aluno atualizado com sucesso');
   });
 });
+app.put('/update/disciplina/:disciplinaID', (req, res) => {
+  const course_id = req.params.disciplinaID
+  const {  course_name, class_room, class_time, class_weekday, professor_id } = req.body;
+  const sql = 'UPDATE courses SET course_name = ?, professor_id = ?, class_room = ?, class_time = ?, class_weekday = ? WHERE course_id = ?';
+  console.debug(req.body, 'debug update disciplina')
+  db.query(sql, [course_name, professor_id, class_room, class_time, class_weekday, course_id], (err, result) => {
+    if (err) {
+      console.debug(err, 'erro update disciplina')
+      return res.status(500).send('Erro ao atualizar o disciplina');
+    }
+    res.send('disciplina atualizado com sucesso');
+  });
+});
 
 
 app.put('/update/tests/:testId', (req, res) => {
