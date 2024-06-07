@@ -87,7 +87,7 @@ export default {
       isRegisterTestOpen: false,
       isEditTest: false,
       currentStudentName: '',
-      currentTest: {},
+      currentTest: null,
       takes: [],
       testId: null,
       tests: []
@@ -97,7 +97,6 @@ export default {
     await this.getCurrentStudent()
     await this.getTakes()
     await this.getTests()
-    console.debug(this.tests, 'TESTS')
   },
   methods: {
     saveStudent: async function () {
@@ -112,6 +111,7 @@ export default {
       this.isRegisterTestOpen = false
       this.isEditTest = false
       this.testId = null
+      this.currentTest = null
     },
     saveAndReloadRegisterTest: async function () {
       await this.getTakes()
@@ -122,6 +122,7 @@ export default {
     },
     openEditTestDialog: async function (event) {
       this.testId = event.test_id
+      this.currentTest = event
       this.isEditTest = true
     },
     getCurrentStudent: async function () {
@@ -172,7 +173,6 @@ export default {
     },
     getTests: async function () {
       try {
-        console.debug(this.takes, 'TAKES')
         const response = await axios.get(`http://localhost:4000/get/tests/${this.takes}`)
         const data = response.data
         if (data != null) {

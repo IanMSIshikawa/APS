@@ -143,10 +143,13 @@ export default {
   },
   mounted: async function () {
     await this.getCoursesNames()
-    console.debug(this.options, 'Cursos')
   },
   updated: function () {
-    console.debug(this.courseName, 'AAAA')
+    console.debug(this._currentTest, 'AAAAAAAA')
+    if (this._currentTest) {
+      this.testName = this._currentTest.test_name
+      this.testGrade = this._currentTest.grade
+    }
   },
   methods: {
     closeDialog: function () {
@@ -204,7 +207,6 @@ export default {
         const response = await axios.get(`http://localhost:4000/get/takesByStudentAndCourse/${this._studentId}/${this.courseName.id}`)
         const data = response.data
         if (data != null) {
-          console.debug(data, 'EITA')
           return data[0].take_id
         } else {
           this.$q.notify({

@@ -124,7 +124,6 @@ export default {
     }
   },
   mounted: function () {
-    console.debug(this._tests, 'TEste')
   },
   methods: {
     openDialog: function () {
