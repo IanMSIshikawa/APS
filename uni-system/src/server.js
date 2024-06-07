@@ -79,6 +79,28 @@ app.post('/insert/disciplina/', (req, res) => {
   });
 })
 
+app.post('/insert/take/', (req, res) => {
+  const {course_id, student_id} = req.body;
+  const sql = 'INSERT INTO takes (course_id, student_id) values (?, ?)'
+  db.query(sql, [course_id, student_id], (err, result) => {
+    if (err) {
+      return res.status(500).send('Erro ao inserir dados.');
+    }
+    res.status(201).send('Item inserido com sucesso.');
+  });
+})
+
+app.post('/insert/test/', (req, res) => {
+  const {take_id, test_name, grade} = req.body;
+  const sql = 'INSERT INTO tests (take_id, test_name, grade) values (?, ?, ?)'
+  db.query(sql, [take_id, test_name, grade], (err, result) => {
+    if (err) {
+      return res.status(500).send('Erro ao inserir dados.');
+    }
+    res.status(201).send('Item inserido com sucesso.');
+  });
+})
+
 // Rota para buscar informações
 app.get('/login/check/:user', (req, res) => {
   const user = req.params.user
@@ -147,6 +169,19 @@ app.get('/get/takesByStudent/:studentId', (req, res) => {
   db.query(sql, [student_id], (err, results) => {
     if (err) {
       return res.status(500).send('Erro ao obter cursos');
+    }
+    console.log(`Busquei no banco de dados ${results}`)
+    res.send(results);
+  });
+})
+
+app.get('/get/takesByStudentAndCourse/:studentId/:courseId', (req, res) => {
+  const student_id = req.params.studentId
+  const course_id = req.params.courseId
+  const sql = 'select take_id from takes where student_id = ? and course_id = ?';
+  db.query(sql, [student_id, course_id], (err, results) => {
+    if (err) {
+      return res.status(500).send('Erro ao obter curso');
     }
     console.log(`Busquei no banco de dados ${results}`)
     res.send(results);

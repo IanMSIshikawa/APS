@@ -65,14 +65,14 @@
                   color="grey-9"
                   class="full-height cursor-pointer q-ml-xs"
                   size="30px"
-                  @click="editTest(item.testId)"
+                  @click="editTest(item)"
                 />
                 <q-icon
                   name="delete"
                   color="red"
                   class="full-height cursor-pointer q-ml-xs"
                   size="30px"
-                  @click="deleteTest(item.testId)"
+                  @click="deleteTest(item.test_id)"
                 />
               </div>
               <span
@@ -122,6 +122,9 @@ export default {
       ColumnsName: TableColumnsName,
       Columns: TableColumns
     }
+  },
+  mounted: function () {
+    console.debug(this._tests, 'TEste')
   },
   methods: {
     openDialog: function () {

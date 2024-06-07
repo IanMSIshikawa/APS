@@ -114,6 +114,14 @@ export default {
     _userId: {
       type: [Number, String],
       required: true
+    },
+    _studentId: {
+      type: [Number, String],
+      required: true
+    },
+    _testId: {
+      type: [Number, String],
+      required: false
     }
   },
   watch: {
@@ -137,19 +145,67 @@ export default {
     await this.getCoursesNames()
     console.debug(this.options, 'Cursos')
   },
+  updated: function () {
+    console.debug(this.courseName, 'AAAA')
+  },
   methods: {
     closeDialog: function () {
       this.$emit('close-dialog')
     },
     saveRegisterTest: async function () {
+      await this.addTake()
+      await this.addTest()
       this.$emit('save-reload-register')
     },
-    getCoursesNames: async function (id) {
+    getCoursesNames: async function () {
       try {
         const response = await axios.get(`http://localhost:4000/get/disciplina/${this._userId}`)
         const data = response.data
         if (data != null) {
           this.options = data.map(disciplina => ({ name: disciplina.course_name, id: disciplina.course_id }))
+        } else {
+          this.$q.notify({
+            color: 'negative',
+            position: 'top',
+            message: 'Condição não atendida!',
+            icon: 'warning'
+          })
+        }
+      } catch (error) {
+        console.error('Erro ao checkar login:', error)
+      }
+    },
+    addTest: async function () {
+      try {
+        await axios.post('http://localhost:4000/insert/test/', { take_id: await this.getTakeByStudentAndCourse(), test_name: this.testName, grade: this.testGrade })
+        this.$q.notify({
+          color: 'positive',
+          position: 'top',
+          message: 'Cadastro realizado com sucesso!'
+        })
+      } catch (error) {
+        console.error('Erro ao cadastrar aluno:', error.response ? error.response.data : error.message)
+      }
+    },
+    addTake: async function () {
+      try {
+        await axios.post('http://localhost:4000/insert/take/', { course_id: this.courseName.id, student_id: this._studentId })
+        this.$q.notify({
+          color: 'positive',
+          position: 'top',
+          message: 'Cadastro realizado com sucesso!'
+        })
+      } catch (error) {
+        console.error('Erro ao cadastrar aluno:', error.response ? error.response.data : error.message)
+      }
+    },
+    getTakeByStudentAndCourse: async function () {
+      try {
+        const response = await axios.get(`http://localhost:4000/get/takesByStudentAndCourse/${this._studentId}/${this.courseName.id}`)
+        const data = response.data
+        if (data != null) {
+          console.debug(data, 'EITA')
+          return data[0].take_id
         } else {
           this.$q.notify({
             color: 'negative',

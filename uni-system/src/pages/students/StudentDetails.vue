@@ -23,9 +23,11 @@
             </div>
           </div>
           <teste-register
-              :_is-open="isRegisterTestOpen"
+              :_is-open="isRegisterTestOpen || isEditTest"
               :_currentTest="currentTest"
               :_userId="user_id"
+              :_studentId="id"
+              :_testId="testId"
               @close-dialog="closeRegisterDialog"
               @save-reload-register="saveAndReloadRegisterTest"
           />
@@ -109,14 +111,17 @@ export default {
     closeRegisterDialog: function () {
       this.isRegisterTestOpen = false
       this.isEditTest = false
+      this.testId = null
     },
     saveAndReloadRegisterTest: async function () {
+      await this.getTakes()
+      await this.getTests()
       this.isRegisterTestOpen = false
       this.isEditTest = false
       this.testId = null
     },
     openEditTestDialog: async function (event) {
-      this.testId = event
+      this.testId = event.test_id
       this.isEditTest = true
     },
     getCurrentStudent: async function () {
