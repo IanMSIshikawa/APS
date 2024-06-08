@@ -153,6 +153,10 @@ export default {
     disciplinaID: {
       type: [Number, String],
       required: true
+    },
+    _currentDisciplina: {
+      type: Object,
+      require: true
     }
   },
   watch: {
@@ -172,7 +176,18 @@ export default {
       takeProfessor: '',
       options: [],
       dayOptions: ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
-      isOpen: false
+      isOpen: false,
+      updated: true
+    }
+  },
+  updated: async function () {
+    if (this._currentDisciplina && this.updated) {
+      this.takeName = this._currentDisciplina.course_name
+      this.takeRoom = this._currentDisciplina.class_room
+      this.takeDay = this._currentDisciplina.class_weekday
+      this.takeTime = this._currentDisciplina.class_time
+      this.takeProfessor = this._currentDisciplina.professor_name
+      this.updated = false
     }
   },
   mounted: async function () {
@@ -180,6 +195,7 @@ export default {
   },
   methods: {
     closeDialog: function () {
+      this.updated = true
       this.takeName = ''
       this.takeRoom = ''
       this.takeDay = ''

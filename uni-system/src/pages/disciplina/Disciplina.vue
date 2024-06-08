@@ -18,6 +18,7 @@
             :isEdit="isEditDisciplina"
             :_id="id"
             :disciplinaID="disciplinaId"
+            :_currentDisciplina="currentDisciplina"
             @close-dialog="closeRegisterDialog"
             @save-take="saveAndReloadRegisterDisciplina"
           />
@@ -67,6 +68,7 @@ export default {
       isRegisterDisciplinaOpen: false,
       isEditDisciplina: false,
       disciplinaId: null,
+      currentDisciplina: null,
       takes: []
     }
   },
@@ -75,8 +77,9 @@ export default {
   },
   methods: {
     openEditDisciplinaDialog: async function (event) {
-      this.disciplinaId = event
+      this.disciplinaId = event.course_id
       console.debug(event, 'AAAA')
+      this.currentDisciplina = event
       this.isEditDisciplina = true
     },
     openRegisterDisciplinaDialog: function () {
@@ -85,6 +88,8 @@ export default {
     closeRegisterDialog: function () {
       this.isRegisterDisciplinaOpen = false
       this.isEditDisciplina = false
+      this.currentDisciplina = null
+      this.updated = true
     },
     saveAndReloadRegisterDisciplina: async function () {
       this.isRegisterDisciplinaOpen = false

@@ -77,7 +77,6 @@ export default {
   },
   methods: {
     openEditProfessorDialog: async function (event) {
-      console.debug(event, 'openEditProfessorDialog')
       this.professorId = event.professor_id
       this.currentProfessor = event
       this.isEditProfessor = true

@@ -65,7 +65,7 @@
                   color="grey-9"
                   class="full-height cursor-pointer q-ml-xs"
                   size="30px"
-                  @click="editDisciplina(item.course_id)"
+                  @click="editDisciplina(item)"
                 />
                 <q-icon
                   name="delete"
