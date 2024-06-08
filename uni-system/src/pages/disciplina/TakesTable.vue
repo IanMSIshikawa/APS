@@ -72,6 +72,7 @@
                   color="red"
                   class="full-height cursor-pointer q-ml-xs"
                   size="30px"
+                  @click="deleteDisciplina(item)"
                 />
               </div>
               <span
@@ -88,6 +89,7 @@
 
 <script>
 import { TableColumnsName, TableColumns } from './TakesConfig'
+import axios from 'axios'
 
 export default {
   props: {
@@ -106,6 +108,26 @@ export default {
     editDisciplina: function (disciplinaID) {
       console.debug(disciplinaID, 'EEEEE')
       this.$emit('edit-disciplina', disciplinaID)
+    },
+    deleteDisciplina: async function (item) {
+      try {
+        const disciplinaid = item.course_id
+        console.debug(disciplinaid, 'disciplinaid')
+        await axios.delete(`http://localhost:4000/delete/disciplina/${disciplinaid}`)
+        this.$q.notify({
+          color: 'positive',
+          position: 'top',
+          message: `Disciplina ${item.course_name} deletada`
+        })
+        this.$emit('save-take')
+      } catch (error) {
+        console.error('Erro ao deletar disciplina:', error.response ? error.response.data : error.message)
+        this.$q.notify({
+          color: 'negative',
+          position: 'top',
+          message: `Não foi possível deletar o disciplina: ${item.course_name}`
+        })
+      }
     }
   }
 }

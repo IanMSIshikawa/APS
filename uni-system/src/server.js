@@ -303,6 +303,28 @@ app.delete('/delete/professor/:id', (req, res) => {
     res.send(`Professor com ID ${professorId} deletado com sucesso.`);
   });
 });
+app.delete('/delete/disciplina/:disciplinaid', (req, res) => {
+  const disciplina_id = req.params.disciplinaid
+  console.log(disciplina_id, 'aaaa')
+  const sql = `
+              DELETE FROM courses
+              WHERE course_id = ?
+              AND NOT EXISTS (
+              SELECT 1 
+              FROM takes inner join tests using (take_id)
+              WHERE course_id = ?)
+            `;
+  db.query(sql, [disciplina_id, disciplina_id], (err, result) => {
+    console.debug(err)
+    if (err) {
+      return res.status(500).send('Erro ao deletar disciplina');
+    }
+    if (result.affectedRows === 0) {
+      return res.status(404).send(`Disciplina ${disciplina_id} não pode ser deletado ou não existe.`);
+    }
+    res.send(`Disciplina com ID ${disciplina_id} deletado com sucesso.`);
+  });
+});
 
 
 

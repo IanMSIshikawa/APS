@@ -28,6 +28,7 @@
             <takes-table
               :_takes="takes"
               @edit-disciplina="openEditDisciplinaDialog($event)"
+              @save-take="saveAndReloadRegisterDisciplina"
               :isEdit="isEditDisciplina"
             />
           </div>
