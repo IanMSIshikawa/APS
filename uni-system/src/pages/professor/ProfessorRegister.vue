@@ -118,6 +118,10 @@ export default {
     professorID: {
       type: [Number, String],
       required: true
+    },
+    _currentProfessor: {
+      type: Object,
+      require: true
     }
   },
   watch: {
@@ -133,7 +137,17 @@ export default {
       professorName: '',
       professorEmail: '',
       professorDepartment: '',
-      isOpen: false
+      isOpen: false,
+      updated: true
+    }
+  },
+  updated: async function () {
+    console.debug(this._currentProfessor, 'AAAAAAAA')
+    if (this._currentProfessor && this.updated) {
+      this.professorName = this._currentProfessor.professor_name
+      this.professorEmail = this._currentProfessor.professor_email
+      this.professorDepartment = this._currentProfessor.dept_name
+      this.updated = false
     }
   },
   mounted: function () {
@@ -141,6 +155,10 @@ export default {
   },
   methods: {
     closeDialog: function () {
+      this.updated = true
+      this.professorName = ''
+      this.professorEmail = ''
+      this.professorDepartment = ''
       this.$emit('close-dialog')
     },
     saveRegisterProfessor: async function (id) {

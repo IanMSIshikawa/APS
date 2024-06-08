@@ -18,6 +18,7 @@
             :id="id"
             :isEdit="isEditProfessor"
             :professorID="professorId"
+            :_currentProfessor="currentProfessor"
             @close-dialog="closeRegisterDialog"
             @save-professor="saveAndReloadRegisterProfessor"
           />
@@ -67,6 +68,7 @@ export default {
       isEditProfessor: false,
       isRegisterProfessorOpen: false,
       professorId: null,
+      currentProfessor: null,
       professors: []
     }
   },
@@ -75,7 +77,9 @@ export default {
   },
   methods: {
     openEditProfessorDialog: async function (event) {
-      this.professorId = event
+      console.debug(event, 'openEditProfessorDialog')
+      this.professorId = event.professor_id
+      this.currentProfessor = event
       this.isEditProfessor = true
     },
     openRegisterProfessorDialog: function () {
@@ -84,6 +88,8 @@ export default {
     closeRegisterDialog: function () {
       this.isRegisterProfessorOpen = false
       this.isEditProfessor = false
+      this.currentProfessor = null
+      this.updated = true
     },
     saveAndReloadRegisterProfessor: async function () {
       this.isRegisterProfessorOpen = false

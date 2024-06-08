@@ -65,7 +65,7 @@
                   color="grey-9"
                   class="full-height cursor-pointer q-ml-xs"
                   size="30px"
-                  @click="editProfessor(item.professor_id)"
+                  @click="editProfessor(item)"
                 />
                 <q-icon
                   name="delete"
