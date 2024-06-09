@@ -142,7 +142,6 @@ export default {
     }
   },
   updated: async function () {
-    console.debug(this._currentProfessor, 'AAAAAAAA')
     if (this._currentProfessor && this.updated) {
       this.professorName = this._currentProfessor.professor_name
       this.professorEmail = this._currentProfessor.professor_email
@@ -167,6 +166,7 @@ export default {
       } else {
         await this.editProfessor(this.professorID)
       }
+      this.updated = true
       this.professorName = ''
       this.professorEmail = ''
       this.professorDepartment = ''

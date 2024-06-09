@@ -92,6 +92,7 @@ export default {
     },
     saveAndReloadRegisterProfessor: async function () {
       this.isRegisterProfessorOpen = false
+      this.isEditProfessor = false
       await this.getProfessors(this.id)
     },
     getProfessors: async function (id) {

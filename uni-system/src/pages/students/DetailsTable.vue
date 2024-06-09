@@ -72,7 +72,7 @@
                   color="red"
                   class="full-height cursor-pointer q-ml-xs"
                   size="30px"
-                  @click="deleteTest(item.test_id)"
+                  @click="deleteTest(item)"
                 />
               </div>
               <span
@@ -104,6 +104,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import { TableColumnsName, TableColumns } from './detailsConfig'
 
 export default {
@@ -132,8 +133,24 @@ export default {
     editTest: function (test) {
       this.$emit('edit-test', test)
     },
-    deleteTest: function (testId) {
-      this.$emit('delete-test', testId)
+    deleteTest: async function (test) {
+      try {
+        const testId = test.test_id
+        await axios.delete(`http://localhost:4000/delete/test/${testId}`)
+        this.$q.notify({
+          color: 'positive',
+          position: 'top',
+          message: `Prova: ${test.test_name} deletada`
+        })
+        this.$emit('reload-tests')
+      } catch (error) {
+        console.error('Erro ao deletar prova:', error.response ? error.response.data : error.message)
+        this.$q.notify({
+          color: 'negative',
+          position: 'top',
+          message: `Não foi possível deletar a prova: ${test.test_name}`
+        })
+      }
     }
   }
 }

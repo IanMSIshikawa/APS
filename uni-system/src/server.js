@@ -2,9 +2,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mysql = require('mysql');
-//alterar em cada maquina 
-const psw = 'Db_12345678';
-const database = 'UniSystem'
+
+// --------------------------
+// Alterar em cada maquina 
+const psw = 'Chucrute2280';
+const database = 'unisystem'
+// --------------------------
 
 const app = express();
 const port = 4000;//pode ser necessario alterar
@@ -227,6 +230,54 @@ app.get('/get/professorCourse/:userId/:professorId', (req, res) => {
   });
 });
 
+app.get('/get/testsNumberByStudent/:studentId', (req, res) => {
+  const student_id = req.params.studentId
+  const sql = 'SELECT count(tst.test_id) as tests_number FROM tests tst JOIN takes tks USING (take_id) WHERE tks.student_id = ?';
+  db.query(sql, [student_id], (err, results) => {
+    if (err) {
+      return res.status(500).send('Erro ao obter o total de provas');
+    }
+    console.log(`Busquei no banco de dados ${results}`)
+    res.send(results)
+  });
+});
+
+app.get('/get/testAvgByStudent/:studentId', (req, res) => {
+  const student_id = req.params.studentId
+  const sql = 'SELECT round(avg(tst.grade), 1) as average FROM tests tst JOIN takes tks USING (take_id) WHERE tks.student_id = ?';
+  db.query(sql, [student_id], (err, results) => {
+    if (err) {
+      return res.status(500).send('Erro ao obter a média de provas');
+    }
+    console.log(`Busquei no banco de dados ${results}`)
+    res.send(results)
+  });
+});
+
+app.get('/get/testMaxByStudent/:studentId', (req, res) => {
+  const student_id = req.params.studentId
+  const sql = 'SELECT max(tst.grade) as max_grade FROM tests tst JOIN takes tks USING (take_id) WHERE tks.student_id = ?';
+  db.query(sql, [student_id], (err, results) => {
+    if (err) {
+      return res.status(500).send('Erro ao obter a maior nota de prova');
+    }
+    console.log(`Busquei no banco de dados ${results}`)
+    res.send(results)
+  });
+});
+
+app.get('/get/testMinByStudent/:studentId', (req, res) => {
+  const student_id = req.params.studentId
+  const sql = 'SELECT min(tst.grade) as min_grade FROM tests tst JOIN takes tks USING (take_id) WHERE tks.student_id = ?';
+  db.query(sql, [student_id], (err, results) => {
+    if (err) {
+      return res.status(500).send('Erro ao obter a menor nota de prova');
+    }
+    console.log(`Busquei no banco de dados ${results}`)
+    res.send(results)
+  });
+});
+
 //Rotas para fazer update
 app.put('/update/estudante/:userId', (req, res) => {
   const user_id = req.params.userId;
@@ -266,7 +317,6 @@ app.put('/update/disciplina/:disciplinaID', (req, res) => {
   });
 });
 
-
 app.put('/update/tests/:testId', (req, res) => {
   const test_id = req.params.testId;
   const { take_id, test_name, grade } = req.body;
@@ -283,7 +333,6 @@ app.put('/update/tests/:testId', (req, res) => {
 //Rotas para deletar
 app.delete('/delete/professor/:id', (req, res) => {
   const professorId = req.params.id
-  console.log(professorId)
   const sql = `
               DELETE FROM professor 
               WHERE professor_id = ? 
@@ -303,9 +352,9 @@ app.delete('/delete/professor/:id', (req, res) => {
     res.send(`Professor com ID ${professorId} deletado com sucesso.`);
   });
 });
+
 app.delete('/delete/disciplina/:disciplinaid', (req, res) => {
   const disciplina_id = req.params.disciplinaid
-  console.log(disciplina_id, 'aaaa')
   const sql = `
               DELETE FROM courses
               WHERE course_id = ?
@@ -326,7 +375,52 @@ app.delete('/delete/disciplina/:disciplinaid', (req, res) => {
   });
 });
 
+app.delete('/delete/test/:testId', (req, res) => {
+  const test_id = req.params.testId
+  const sql = `DELETE FROM tests WHERE test_id = ?`;
+  db.query(sql, [test_id], (err, result) => {
+    if (err) {
+      return res.status(500).send('Erro ao deletar prova');
+    }
+    if (result.affectedRows === 0) {
+      return res.status(404).send(`Prova ${test_id} não pode ser deletada ou não existe.`);
+    }
+    res.send(`Prova com ID ${test_id} deletada com sucesso.`);
+  });
+});
 
+app.delete('/delete/allTestsByStudent/:studentId', (req, res) => {
+  const student_id = req.params.studentId
+  const sql = `DELETE FROM tests tst WHERE tst.take_id IN (SELECT tks.take_id FROM takes tks WHERE tks.student_id = ?)`
+  db.query(sql, [student_id], (err) => {
+    if (err) {
+      return res.status(500).send('Erro ao deletar provas');
+    }
+    res.send('Provas deletadas');
+  });
+});
+
+app.delete('/delete/allTakesByStudent/:studentId', (req, res) => {
+  const student_id = req.params.studentId
+  const sql = `DELETE FROM takes tks WHERE tks.student_id = ?`
+  db.query(sql, [student_id], (err) => {
+    if (err) {
+      return res.status(500).send('Erro ao deletar turmas');
+    }
+    res.send('Turmas deletadas');
+  });
+});
+
+app.delete('/delete/student/:studentId', (req, res) => {
+  const student_id = req.params.studentId
+  const sql = `DELETE FROM students WHERE student_id = ?`
+  db.query(sql, [student_id], (err) => {
+    if (err) {
+      return res.status(500).send('Erro ao deletar aluno');
+    }
+    res.send('Aluno deletado');
+  });
+});
 
 // Iniciar o servidor
 app.listen(port, () => {

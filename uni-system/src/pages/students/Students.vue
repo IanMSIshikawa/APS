@@ -80,10 +80,29 @@ export default {
     },
     getStudents: async function (id) {
       try {
-        const response = await axios.get(`http://localhost:4000/get/estudantes/${id}`)
-        const data = response.data
+        let response = await axios.get(`http://localhost:4000/get/estudantes/${id}`)
+        let data = response.data
         if (data != null) {
           this.students = data
+          for (const student of this.students) {
+            response = await axios.get(`http://localhost:4000/get/testsNumberByStudent/${student.student_id}`)
+            data = response.data
+            if (data != null && data[0].tests_number !== 0) {
+              student.tests_number = data[0].tests_number
+              response = await axios.get(`http://localhost:4000/get/testAvgByStudent/${student.student_id}`)
+              student.average = response.data[0].average
+              response = await axios.get(`http://localhost:4000/get/testMaxByStudent/${student.student_id}`)
+              student.highest_grade = response.data[0].max_grade
+              response = await axios.get(`http://localhost:4000/get/testMinByStudent/${student.student_id}`)
+              student.lowest_grade = response.data[0].min_grade
+            } else {
+              student.tests_number = 0
+              student.average = 0
+              student.highest_grade = 0
+              student.lowest_grade = 0
+              console.debug(this.students, 'ALUNOS')
+            }
+          }
         } else {
           this.$q.notify({
             color: 'negative',

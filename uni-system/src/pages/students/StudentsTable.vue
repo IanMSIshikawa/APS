@@ -75,7 +75,7 @@
               <span
                 v-else
                 class="text-neutral-primary-darkest q-px-sm q-ml-xs"
-                v-html="item[col.field] || ''"
+                v-html="item[col.field] || '0'"
               />
             </q-td>
           </q-tr>

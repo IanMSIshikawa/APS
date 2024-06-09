@@ -10,6 +10,7 @@
                 label="Deletar aluno"
                 no-caps
                 class="delete-button"
+                @click="deleteStudent"
               >
               </q-btn>
               <q-btn
@@ -56,6 +57,7 @@
               :_tests="tests"
               @edit-test="openEditTestDialog($event)"
               @open-dialog="openRegisterTestDialog"
+              @reload-tests="saveAndReloadRegisterTest()"
             />
           </div>
         </q-page>
@@ -187,6 +189,26 @@ export default {
         }
       } catch (error) {
         console.error('Erro ao checkar login:', error)
+      }
+    },
+    deleteStudent: async function () {
+      try {
+        await axios.delete(`http://localhost:4000/delete/allTestsByStudent/${this.id}`)
+        await axios.delete(`http://localhost:4000/delete/allTakesByStudent/${this.id}`)
+        await axios.delete(`http://localhost:4000/delete/student/${this.id}`)
+        this.$q.notify({
+          color: 'positive',
+          position: 'top',
+          message: `Aluno ${this.currentStudentName} deletado`
+        })
+        await this.$router.push({ name: 'Estudante', params: { id: this.user_id } })
+      } catch (error) {
+        console.error('Erro ao deletar aluno:', error.response ? error.response.data : error.message)
+        this.$q.notify({
+          color: 'negative',
+          position: 'top',
+          message: `Não foi possível deletar o aluno: ${this.currentStudentName}`
+        })
       }
     }
   }

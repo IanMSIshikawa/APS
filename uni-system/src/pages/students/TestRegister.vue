@@ -146,7 +146,6 @@ export default {
     await this.getCoursesNames()
   },
   updated: async function () {
-    console.debug(this._currentTest, 'AAAAAAAA')
     if (this._currentTest && this.updated) {
       this.testName = this._currentTest.test_name
       this.testGrade = this._currentTest.grade
@@ -155,7 +154,6 @@ export default {
       this.courseName.name = tmpCourseName.course_name
       this.updated = false
     }
-    console.debug(this.courseName, 'COURSE NAME')
   },
   methods: {
     closeDialog: function () {
@@ -172,6 +170,10 @@ export default {
       } else {
         await this.updateCurrentTest()
       }
+      this.updated = true
+      this.testName = ''
+      this.testGrade = ''
+      this.courseName = { name: null, id: null }
       this.$emit('save-reload-register')
     },
     getCoursesNames: async function () {
